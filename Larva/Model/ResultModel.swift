@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Result {
+final class FinalResult {
     var skinTone: String
     var underTone: String
     var shades: [Shade]

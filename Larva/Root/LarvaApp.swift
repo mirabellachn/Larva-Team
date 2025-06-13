@@ -12,7 +12,7 @@ import SwiftData
 struct LarvaApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Result.self
+            FinalResult.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -24,7 +24,7 @@ struct LarvaApp: App {
     }()
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RootView()
         }
         .modelContainer(sharedModelContainer)
     }
