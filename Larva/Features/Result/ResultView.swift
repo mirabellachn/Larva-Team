@@ -4,7 +4,7 @@ import SwiftUI
 struct ResultView: View {
     var body: some View {
         VStack(spacing: 24) {
-            VStack {
+            VStack(spacing: 8) {
                 // Title
                 HStack {
                     Text("Hi Mate!")
@@ -12,7 +12,6 @@ struct ResultView: View {
                         .fontWeight(.bold)
                     Spacer()
                 }
-                .padding(.bottom, 8)
                 // SubTitle
                 HStack {
                     Text("This is your skin color analysis result ✨")
@@ -48,6 +47,7 @@ struct ResultView: View {
                         .font(.system(size: 16))
                 }
             }
+            .padding(.bottom, 16)
             VStack(spacing: 8) {
                 // Complextion Shade
                 HStack(spacing: 8) {
@@ -111,7 +111,7 @@ struct ResultView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
                 .frame(maxWidth: .infinity, alignment: .top)
-                .padding(.bottom, 68)
+                .padding(.bottom, 48)
         }
         .padding(.leading, 16)
         .padding(.trailing, 16)
