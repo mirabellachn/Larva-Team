@@ -14,7 +14,7 @@ struct HomeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.bottom, 20)
-            if viewModel.haveResult {
+            if viewModel.haveResults {
             }
             Text("Skin Tone")
             HStack {
@@ -30,8 +30,8 @@ struct HomeView: View {
                     .frame(width: 50, height: 50)
                 Text("Penjelasan")
             }
-            Button(action: { //NavigationLink??
-                
+            Button(action: { // NavigationLink??
+                print("...")
             }) {
                 Text("Analyze Your Skin")
             }
