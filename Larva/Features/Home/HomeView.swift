@@ -14,7 +14,7 @@ struct HomeView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.bottom, 20)
-            if viewModel.haveResult {
+            if viewModel.haveResults {
             }
             Text("Skin Tone")
             HStack {
