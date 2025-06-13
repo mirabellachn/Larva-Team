@@ -2,94 +2,94 @@ import Foundation
 import SwiftUI
 
 struct ResultView: View {
+    let shades = ["Light Ivory", "Ivory", "Light"]
     var body: some View {
         VStack(spacing: 24) {
             VStack(spacing: 8) {
                 // Title
                 HStack {
-                    Text("Hi Mate!")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                    Text("Hi, Shade Seeker!")                                 .font(.custom("NewYorkSmall-Semibold", size: 24))
+                    
+                        .overlay(
+                            LinearGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color(red: 0.72, green: 0.34, blue: 0.53), location: 0.00), Gradient.Stop(color: Color(red: 1, green: 0.68, blue: 0.78), location: 1.0)
+                                ],
+                                startPoint: UnitPoint(x: 0, y: -0.78),
+                                endPoint: UnitPoint(x: 0.73, y: 1.33)
+                            )
+                            .mask(
+                                Text("Hi, Shade Seeker!")            .font(.custom("NewYorkSmall-Semibold", size: 24))
+                                
+                            )
+                        )
                     Spacer()
                 }
                 // SubTitle
                 HStack {
-                    Text("This is your skin color analysis result ✨")
-                        .font(.title3)
+                    Text("We’ve found a shade that most likely aligns with your personal tone ✨")
+                        .font(.system(size: 16))
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: 320, alignment: .leading) // batas lebar agar distribusi kata lebih baik
+                    
                     Spacer()
                 }
             }
             HStack(spacing: 45) {
                 // Skintone
-                VStack(alignment: .center, spacing: 8) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("Skintone")
-                        .font(.system(size: 16))
+                        .font(.custom("NewYorkSmall-Semibold", size: 16))
                     Circle()
                         .fill(Color.black.opacity(0.2))
                         .stroke(Color.black, lineWidth: 0.5)    .frame(width: 100, height: 100)
                     Text("Light")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
-                    Text("Kulit kamu terang")
-                        .font(.system(size: 16))
+                        .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
+                    Text("Monk Scale no. 1")
+                        .font(.system(size: 12))
                 }
                 // Undertone
-                VStack(alignment: .center, spacing: 8) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("Undertone")
-                        .font(.system(size: 16))
+                        .font(.custom("NewYorkSmall-Semibold", size: 16))
                     Circle()
                         .fill(Color.black.opacity(0.2))
                         .stroke(Color.black, lineWidth: 0.5)    .frame(width: 100, height: 100)
                     Text("Cool")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
-                    Text("Kulit kamu cool")
-                        .font(.system(size: 16))
+                        .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
+                    
+                    Text("Purple or bluish veins")
+                        .font(.system(size: 12))
                 }
             }
             .padding(.bottom, 16)
             VStack(spacing: 8) {
-                // Complextion Shade
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(Color.white)
-                        .stroke(Color.black, lineWidth: 1)    .frame(width: 24, height: 24)
-                    Text("Complexion Shade")
-                        .font(.system(size: 16))
-                        .fontWeight(.bold)
-                    Spacer()
-                }
                 // Check this recommendation out!
                 HStack {
-                    Text("Check this recommendation out! ")
-                        .font(.title3)
+                    Text("Complexion Shade Recommendations")
+                        .font(.custom("NewYorkSmall-SemiBold", size: 16))
                     Spacer()
                 }
                 HStack(spacing: 24) {
                     // Shade recommendation
-                    VStack {
-                        Circle()
-                            .fill(Color.black.opacity(0.2))
-                            .stroke(Color.black, lineWidth: 0.5)    .frame(width: 85, height: 85)
-                        Text("Light Ivory")
-                            .font(.system(size: 16))
+                    HStack(spacing: 24) {
+                        ForEach(shades, id: \.self) { shade in
+                            VStack {
+                                Circle()
+                                    .fill(Color.black.opacity(0.2))
+                                    .overlay(Circle().stroke(Color.black, lineWidth: 0.5))
+                                    .frame(width: 85, height: 85)
+                                Text(shade)
+                                    .font(.system(size: 16))
+                            }
+                        }
                     }
-                    VStack {
-                        Circle()
-                            .fill(Color.black.opacity(0.2))
-                            .stroke(Color.black, lineWidth: 0.5)    .frame(width: 85, height: 85)
-                        Text("Ivory")
-                            .font(.system(size: 16))
-                    }
-                    VStack {
-                        Circle()
-                            .fill(Color.black.opacity(0.2))
-                            .stroke(Color.black, lineWidth: 0.5)    .frame(width: 85, height: 85)
-                        Text("Light")
-                            .font(.system(size: 16))
-                    }
+                    .padding(.top, 8)
                 }
-                .padding(.top, 8)
             }
             Spacer()
             // Home page button
@@ -113,9 +113,7 @@ struct ResultView: View {
                 .frame(maxWidth: .infinity, alignment: .top)
                 .padding(.bottom, 48)
         }
-        .padding(.leading, 16)
-        .padding(.trailing, 16)
-        .padding(.top, 32)
+        .padding(EdgeInsets(top: 32, leading: 16, bottom: 0, trailing: 16))
     }
 }
 
