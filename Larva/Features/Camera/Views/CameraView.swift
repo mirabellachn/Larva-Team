@@ -60,10 +60,10 @@ struct CameraView: View {
             }
             .navigationDestination(isPresented: $cameraViewModel.isShowingResult) {
                 // TODO: Process image to the next screen flow
-                if cameraViewModel.capturedImage != nil {
-                    //                    SkinToneProcessorView(image: image) {
-                    //                        cameraViewModel.clearCapturedPhoto()
-                    //                    }
+                if let image = cameraViewModel.capturedImage {
+                    PreviewView(image: image) {
+                        cameraViewModel.clearCapturedPhoto()
+                    }
                 }
             }
         }
