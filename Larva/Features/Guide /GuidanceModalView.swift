@@ -1,21 +1,20 @@
 import SwiftUI
-import AVKit
 
 struct GuidanceModalView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var playerController = VideoPlayerController()
     
     @State private var offset: CGFloat = 0
     @State private var lastOffset: CGFloat = 0
     private let minHeight: CGFloat = 100
     private let cornerRadius: CGFloat = 20
     
+
     private let guidanceItems = [
-        "Guidance 1",
-        "Guidance 2",
-        "Guidance 3",
-        "Guidance 4",
-        "Guidance 5",
+        "Be alone, no other faces in the frame.",
+        "Keep your face bare, no makeup.",
+        "Look into the rear camera.",
+        "Use the volume button to snap a pic.",
+        "Be ready, flash turn on automatically.",
     ]
     
     var body: some View {
@@ -29,37 +28,30 @@ struct GuidanceModalView: View {
                 Spacer()
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("📖 Guidance")
+                        Text("How to take the picture")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                            .padding(.leading, 20)
+                            .foregroundStyle(Color(red: 0.72, green: 0.34, blue: 0.53))
+                            .padding(.leading, 15)
                             .padding(.top, 30)
+                            .padding(.bottom, 8)
                         
-                        Text("Here’s a cheat sheet to help you take a good picture!")
-                            .font(.subheadline)
+                        Text("A simple guide to make your photo work better for the analysis!")
+                            .font(.title3)
                             .foregroundColor(.black)
                             .padding(.leading, 16)
                             .padding(.bottom, 24)
-                        
-                        VideoPlayer(player: playerController.player)
-                            .frame(maxWidth: .infinity)
-                            .aspectRatio(16/9, contentMode: .fill)
-                            .cornerRadius(20)
-                            .padding(EdgeInsets(top: 0, leading: 24, bottom: 10, trailing: 24))
                     }
                     VStack(alignment: .leading, spacing: 10) {
                         VStack(spacing: 10) {
                             HStack(spacing: 30) {
                                 ZStack(alignment: .bottom) {
-                                    Image(systemName: "photo") //
+                                    Image("front-position")
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 128, height: 192)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .padding(.leading, 20)
-                                        .overlay(Color(red: 217/255, green: 217/255, blue: 217/255)
-                                        )
                                         .cornerRadius(16)
                                     
                                     Image(systemName: "checkmark.circle.fill")
@@ -68,18 +60,16 @@ struct GuidanceModalView: View {
                                         .frame(width: 36, height: 36)
                                         .foregroundColor(.green)
                                         .offset(y: 15)
-                                    
                                 }
                                 
-                                
                                 ZStack(alignment: .bottom) {
-                                    Image(systemName: "photo") //
+                                    Image("side-position")
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 128, height: 192)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .padding(.trailing, 20)
-                                        .overlay(Color(red: 217/255, green: 217/255, blue: 217/255))
+//                                        .overlay(Color(red: 217/255, green: 217/255, blue: 217/255))
                                         .cornerRadius(16)
                                     
                                     Image(systemName: "xmark.circle.fill")
@@ -91,32 +81,25 @@ struct GuidanceModalView: View {
                             }
                             .padding(.vertical, 8)
                             
-                            
-                            
                             ForEach(guidanceItems.indices, id: \.self) { index in
-                                HStack(alignment: .center, spacing: 15) {
-                                    
+                                HStack(alignment: .center, spacing: 10) {
                                     Circle()
                                         .frame(width: 44, height: 44)
                                         .foregroundColor(Color(red: 217/255, green: 217/255, blue: 217/255))
-                                        .padding(.leading, 20)
-                                    
                                     
                                     Text(guidanceItems[index])
                                         .font(.body)
                                         .foregroundColor(.primary)
-                                        .padding(.trailing, 20)
                                     
                                     Spacer()
                                 }
+                                .padding(.leading, 20)
                             }
-                            .padding(.vertical, 8)
-                            
                             
                             Button(action: {
                                 print("Button tapped")
                             }) {
-                                Text("Okay, I Understand")
+                                Text("Take a Picture")
                                     .font(.headline)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.white)
@@ -128,6 +111,16 @@ struct GuidanceModalView: View {
                             .padding(.horizontal, 30)
                             .padding(.top, 24)
                             
+//                            Text("Watch the Tutorial")
+//                                .font(.headline)
+//                                .fontWeight(.semibold)
+//                                .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
+//                                .underline()
+//                                .padding(.top, 16)
+//                                .frame(maxWidth: .infinity, alignment: .center)
+//                                .onTapGesture {
+//                                    print("Watch Tutorial tapped")
+//                                }
                             
                             Spacer(minLength: 20)
                         }
@@ -146,7 +139,6 @@ struct GuidanceModalView: View {
                     }
                     .onEnded { value in
                         lastOffset = offset
-                        
                         if offset > geometry.size.height * 0.5 {
                             dismiss()
                         }
@@ -161,37 +153,10 @@ struct GuidanceModalView: View {
             )
             .ignoresSafeArea(.all, edges: .bottom)
             .onAppear {
-                
                 offset = 0
                 lastOffset = 0
-                playerController.player.play()
             }
         }
-    }
-}
-
-class VideoPlayerController: ObservableObject {
-    let player: AVPlayer
-    
-    init() {
-        
-        guard let videoURL = Bundle.main.url(forResource: "guide_video", withExtension: "mp4") else {
-            fatalError("Video file 'guide_video.mp4' not found in the bundle.")
-        }
-        player = AVPlayer(url: videoURL)
-        
-        NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
-            object: player.currentItem,
-            queue: .main
-        ) { [weak self] _ in
-            self?.player.seek(to: .zero)
-            self?.player.play()
-        }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 
