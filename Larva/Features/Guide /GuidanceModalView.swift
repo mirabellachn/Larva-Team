@@ -8,7 +8,6 @@ struct GuidanceModalView: View {
     private let minHeight: CGFloat = 100
     private let cornerRadius: CGFloat = 20
     
-
     private let guidanceItems = [
         "Be alone, no other faces in the frame.",
         "Keep your face bare, no makeup.",
@@ -69,7 +68,6 @@ struct GuidanceModalView: View {
                                         .frame(width: 128, height: 192)
                                         .clipShape(RoundedRectangle(cornerRadius: 16))
                                         .padding(.trailing, 20)
-//                                        .overlay(Color(red: 217/255, green: 217/255, blue: 217/255))
                                         .cornerRadius(16)
                                     
                                     Image(systemName: "xmark.circle.fill")
@@ -126,6 +124,11 @@ struct GuidanceModalView: View {
                         }
                     }
                 }
+                .background(
+                    Image("sub-background")
+                        .resizable()
+                        .scaledToFill()
+                )
                 .background(Color(.systemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             }
