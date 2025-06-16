@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RootView: View {
+    @StateObject private var viewModel: HomeViewModel = .init(haveResults: false)
+
     var body: some View {
-        Text("Hello, World!")
+        HomeView(viewModel: viewModel)
     }
 }

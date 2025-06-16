@@ -10,61 +10,63 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Exist State
-            if viewModel.haveResults {
-                VStack {
-                    // Texts
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Hi, Shade Wise Seeker!")
-                            .modifier(HeaderTextFormat())
-                        Text("Your most recent analysis is in! Let’s take a look at your tone and shade 🎨")
-                            .font(.custom("SF Pro", size: 16))
-                            .foregroundColor(.black)
+            NavigationStack {
+                // Exist State
+                if viewModel.haveResults {
+                    VStack {
+                        // Texts
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Hi, Shade Wise Seeker!")
+                                .modifier(HeaderTextFormat())
+                            Text("Your most recent analysis is in! Let’s take a look at your tone and shade 🎨")
+                                .font(.custom("SF Pro", size: 16))
+                                .foregroundColor(.black)
+                        }
+                        .padding(16)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        // Result
+                        // Button
+                        NavigationLink(destination: {
+                            CameraView()
+                        }, label: {
+                            Text("Take Another Analysis")
+                                .foregroundStyle(Color.white)
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 16)
+                                .frame(width: 320, alignment: .center)
+                                .background(Color(red: 0.72, green: 0.34, blue: 0.53))
+                                .cornerRadius(32)
+                        })
                     }
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    // Result
-                    // Button
-                    Button(action: {
-                        // Action
-                    }, label: {
-                        Text("Take Another Analysis")
-                            .foregroundStyle(Color.white)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 16)
-                            .frame(width: 320, alignment: .center)
-                            .background(Color(red: 0.72, green: 0.34, blue: 0.53))
-                            .cornerRadius(32)
-                    })
-                }
-            } else { // Empty State
-                VStack(alignment: .center, spacing: 16) {
-                    // Texts
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Hi, Shade Wise Seeker!")
-                            .modifier(HeaderTextFormat())
-                        Text("Let’s discover your most likely complexion shade match in just a few taps 🚀")
-                            .font(.custom("SF Pro", size: 16))
-                            .foregroundColor(.black)
+                } else { // Empty State
+                    VStack(alignment: .center, spacing: 16) {
+                        // Texts
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Hi, Shade Wise Seeker!")
+                                .modifier(HeaderTextFormat())
+                            Text("Let’s discover your most likely complexion shade match in just a few taps 🚀")
+                                .font(.custom("SF Pro", size: 16))
+                                .foregroundColor(.black)
+                        }
+                        .padding(16)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        // Mascot Greeting
+                        Circle()
+                            .frame(width: 310, height: 492)
+                            .foregroundStyle(Color.pink)
+                        // Button
+                        NavigationLink(destination: {
+                            CameraView()
+                        }, label: {
+                            Text("Take Analysis")
+                                .foregroundStyle(Color.white)
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 16)
+                                .frame(width: 320, alignment: .center)
+                                .background(Color(red: 0.72, green: 0.34, blue: 0.53))
+                                .cornerRadius(32)
+                        })
                     }
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    // Mascot Greeting
-                    Circle()
-                        .frame(width: 310, height: 492)
-                        .foregroundStyle(Color.pink)
-                    // Button
-                    Button(action: {
-                        // Action
-                    }, label: {
-                        Text("Take Analysis")
-                            .foregroundStyle(Color.white)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 16)
-                            .frame(width: 320, alignment: .center)
-                            .background(Color(red: 0.72, green: 0.34, blue: 0.53))
-                            .cornerRadius(32)
-                    })
                 }
             }
         }
@@ -72,6 +74,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    @Previewable @Environment(\.modelContext) var context
-    HomeView(viewModel: HomeViewModel(haveResults: true, context: context))
+//    @Previewable @Environment(\.modelContext) var context
+    HomeView(viewModel: HomeViewModel(haveResults: true))
 }

@@ -5,8 +5,8 @@
 //  Created by Ageng Tawang Aryonindito on 12/06/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct LarvaApp: App {
@@ -22,9 +22,11 @@ struct LarvaApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
     var body: some Scene {
         WindowGroup {
             RootView()
+                .preferredColorScheme(.light)
         }
         .modelContainer(sharedModelContainer)
     }

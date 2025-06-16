@@ -18,22 +18,3 @@ struct HeaderTextFormat: ViewModifier {
             .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
     }
 }
-
-//struct HeaderTextFormat: ViewModifier {
-//    func body(content: Content) -> some View {
-//        content
-//            .font(
-//                Font.custom("New York", size: 19)
-//                    .weight(.bold)
-//            )
-//            .multilineTextAlignment(.center)
-//            .overlay( 
-//                LinearGradient(
-//                    colors: [Color(red: 0.72, green: 0.34, blue: 0.53), Color.purple],
-//                    startPoint: .leading,
-//                    endPoint: .trailing
-//                )
-//            )
-//            .mask(content)
-//    }
-//}
