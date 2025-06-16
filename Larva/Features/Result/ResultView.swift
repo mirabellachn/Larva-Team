@@ -31,7 +31,7 @@ struct ResultView: View {
                         .font(.system(size: 16))
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: 320, alignment: .leading) // batas lebar agar distribusi kata lebih baik
-                    
+               
                     Spacer()
                 }
             }
@@ -113,7 +113,7 @@ struct ResultView: View {
                 .frame(maxWidth: .infinity, alignment: .top)
                 .padding(.bottom, 48)
         }
-        .padding(EdgeInsets(top: 32, leading: 16, bottom: 0, trailing: 16))
+        .padding(EdgeInsets(top: 32, leading: 16, bottom: 0, trailing: 16)
     }
 }
 
