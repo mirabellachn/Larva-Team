@@ -5,14 +5,14 @@
 //  Created by Ageng Tawang Aryonindito on 12/06/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct LarvaApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Result.self
+            FinalResult.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -22,9 +22,10 @@ struct LarvaApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RootView()
         }
         .modelContainer(sharedModelContainer)
     }
