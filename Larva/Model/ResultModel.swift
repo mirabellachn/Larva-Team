@@ -12,10 +12,12 @@ import SwiftData
 final class FinalResult {
     var skinTone: String
     var underTone: String
+    var scale: String
     var shades: [Shade]
-    init(skinTone: String, underTone: String, shades: [Shade]) {
+    init(skinTone: String, underTone: String, scale: String, shades: [Shade]) {
         self.skinTone = skinTone
         self.underTone = underTone
+        self.scale = scale
         self.shades = shades
     }
 }

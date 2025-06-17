@@ -15,7 +15,6 @@ enum WarningPillState {
 
 struct WarningPillView: View {
     let state: WarningPillState
-
     var body: some View {
         HStack {
             switch state {

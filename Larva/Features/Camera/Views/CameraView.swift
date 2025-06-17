@@ -11,7 +11,6 @@ import SwiftUI
 struct CameraView: View {
     @StateObject private var cameraViewModel = CameraViewModel()
     @Environment(\.scenePhase) var scenePhase
-    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -23,12 +22,11 @@ struct CameraView: View {
                                     .ignoresSafeArea()
                                     .background(.black)
                                     .clipShape(RoundedRectangle(cornerRadius: 36))
-                            
                                 // Only shows if detected face is only one
                                 if cameraViewModel.faceCount == 1 {
                                     FaceBoundingBoxOverlayView(
                                         boxes: cameraViewModel.faceBoundingBoxes,
-                                        previewSize: geometry.size,
+                                        previewSize: geometry.size
                                     )
                                 }
                             }
@@ -40,20 +38,18 @@ struct CameraView: View {
                         }
                         VStack {
                             Spacer()
-        
                             WarningPillView(state: cameraViewModel.faceCount == 1 ? .faceFound : cameraViewModel.faceCount > 0 ? .faceMoreThanOne : .faceNotFound)
-                            
                             Button(action: {
-                                #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
                                 cameraViewModel.mockCapturePhoto()
-                                #else
+#else
                                 cameraViewModel.capturePhoto()
-                                #endif
-                            }) {
+#endif
+                            }, label: {
                                 Image(systemName: "camera.circle.fill")
                                     .font(.system(size: 64))
                                     .foregroundColor(.white)
-                            }
+                            })
                             .disabled(cameraViewModel.faceCount != 1)
                             .padding(.bottom, 30)
                         }
@@ -64,10 +60,10 @@ struct CameraView: View {
             }
             .navigationDestination(isPresented: $cameraViewModel.isShowingResult) {
                 // TODO: Process image to the next screen flow
-                if cameraViewModel.capturedImage != nil {
-//                    SkinToneProcessorView(image: image) {
-//                        cameraViewModel.clearCapturedPhoto()
-//                    }
+                if let image = cameraViewModel.capturedImage {
+                    PreviewView(image: image) {
+                        cameraViewModel.clearCapturedPhoto()
+                    }
                 }
             }
         }
@@ -86,24 +82,24 @@ struct CameraView: View {
 
 struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
-    
-    func makeUIView(context: Context) -> some UIView {
+    func makeUIView(context: Context) -> UIView {
         let previewView = PreviewView()
-        
         previewView.videoPreviewLayer.session = session
         previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         return previewView
     }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-    
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // No update needed for now
+    }
     private class PreviewView: UIView {
         override class var layerClass: AnyClass {
-            AVCaptureVideoPreviewLayer.self
+            return AVCaptureVideoPreviewLayer.self
         }
-        
         var videoPreviewLayer: AVCaptureVideoPreviewLayer {
-            return layer as! AVCaptureVideoPreviewLayer
+            guard let layer = self.layer as? AVCaptureVideoPreviewLayer else {
+                fatalError("Expected layer to be of type AVCaptureVideoPreviewLayer")
+            }
+            return layer
         }
     }
 }
