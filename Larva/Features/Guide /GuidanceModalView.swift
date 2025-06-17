@@ -5,7 +5,7 @@ struct GuidanceModalView: View {
     
     @State private var offset: CGFloat = 0
     @State private var lastOffset: CGFloat = 0
-    private let minHeight: CGFloat = 100
+    private let minHeight: CGFloat = 50
     private let cornerRadius: CGFloat = 20
     
     private let guidanceItems = [
@@ -93,37 +93,11 @@ struct GuidanceModalView: View {
                                 }
                                 .padding(.leading, 20)
                             }
-                            
-                            Button(action: {
-                                print("Button tapped")
-                            }) {
-                                Text("Take a Picture")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(red: 0.72, green: 0.34, blue: 0.53))
-                                    .clipShape(RoundedRectangle(cornerRadius: 40))
-                            }
-                            .padding(.horizontal, 30)
-                            .padding(.top, 24)
-                            
-//                            Text("Watch the Tutorial")
-//                                .font(.headline)
-//                                .fontWeight(.semibold)
-//                                .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
-//                                .underline()
-//                                .padding(.top, 16)
-//                                .frame(maxWidth: .infinity, alignment: .center)
-//                                .onTapGesture {
-//                                    print("Watch Tutorial tapped")
-//                                }
-                            
-                            Spacer(minLength: 20)
                         }
                     }
                 }
+                .frame(minHeight: 0)
+                .padding(.bottom, 0)
                 .background(
                     Image("sub-background")
                         .resizable()
@@ -168,3 +142,6 @@ struct GuidanceModalView_Previews: PreviewProvider {
         GuidanceModalView()
     }
 }
+
+
+// cari tau automation modal -- bikin view full, ada 1 tombol ketika diklik, modalnya muncul -- 
