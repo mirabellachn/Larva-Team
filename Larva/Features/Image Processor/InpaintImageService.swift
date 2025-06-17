@@ -9,7 +9,10 @@ import UIKit
 import Vision
 
 class InpaintImageService {
-    static func process(from image: UIImage, faceObservation: VNFaceObservation, originalImageSize: CGSize, inpaintColor: UIColor) throws -> UIImage {
+    static func process(from image: UIImage,
+                        faceObservation: VNFaceObservation,
+                        originalImageSize: CGSize,
+                        inpaintColor: UIColor) throws -> UIImage {
         guard let orientedImage = image.orientedCorrectly() else { return image }
         guard let orientedCgImage = orientedImage.cgImage else {
             return image
@@ -68,7 +71,8 @@ class InpaintImageService {
         guard let inpaintedImage = UIGraphicsGetImageFromCurrentImageContext() else { return image }
         UIGraphicsEndImageContext()
 
-        guard let cropped = try CropImageService.cropFace(from: inpaintedImage, for: faceObservation) else { return inpaintedImage }
+        guard let cropped = try CropImageService.cropFace(from: inpaintedImage,
+                                                          for: faceObservation) else { return inpaintedImage }
 
         return UIImage(cgImage: cropped)
     }

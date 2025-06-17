@@ -45,7 +45,9 @@ class CameraService: NSObject, AVCapturePhotoCaptureDelegate, AVCaptureVideoData
 
             self.captureSession.beginConfiguration()
 
-            guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else { return }
+            guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                            for: .video,
+                                                            position: .back) else { return }
             guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice) else { return }
             guard self.captureSession.canAddInput(videoDeviceInput) else { return }
             self.captureSession.addInput(videoDeviceInput)
@@ -95,7 +97,8 @@ class CameraService: NSObject, AVCapturePhotoCaptureDelegate, AVCaptureVideoData
         }
     }
 
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
+                       from connection: AVCaptureConnection) {
         let faceDetectionRequest = VNDetectFaceRectanglesRequest { [weak self] request, error in
             if let error = error {
                 print("Face detection error: \(error.localizedDescription)")
@@ -133,7 +136,9 @@ class CameraService: NSObject, AVCapturePhotoCaptureDelegate, AVCaptureVideoData
         }
 
         guard let imageData = photo.fileDataRepresentation() else {
-            let captureError = NSError(domain: "CameraServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get image data."])
+            let captureError = NSError(domain: "CameraServiceError",
+                                       code: 0,
+                                       userInfo: [NSLocalizedDescriptionKey: "Failed to get image data."])
             photoCaptureCompletion?(.failure(captureError))
 
             return

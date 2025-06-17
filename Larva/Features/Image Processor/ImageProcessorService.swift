@@ -18,7 +18,8 @@ class ImageProcessorService {
         do {
             try handler.perform([detectFacesRequest])
             guard let faceObservations = detectFacesRequest.results else { return nil }
-            guard let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0]) else { return nil }
+            guard let croppedCgImage = try CropImageService.cropFace(from: image,
+                                                                     for: faceObservations[0]) else { return nil }
             landmarksRequest.inputFaceObservations = faceObservations
             qualityRequest.inputFaceObservations = faceObservations
             try handler.perform([qualityRequest, landmarksRequest])
@@ -27,9 +28,12 @@ class ImageProcessorService {
             //
             _ = qualityResults[0].faceCaptureQuality
             //
-            guard let landmarksResults = landmarksRequest.results else { return croppedImage }
+//            guard let landmarksResults = landmarksRequest.results else { return croppedImage }
             guard let averageSkinColor = croppedImage.averageColor else { return croppedImage }
-            guard let inpaintedImage = try? InpaintImageService.process(from: image, faceObservation: faceObservations[0], originalImageSize: image.size, inpaintColor: averageSkinColor) else {
+            guard let inpaintedImage = try? InpaintImageService.process(from: image,
+                                                                        faceObservation: faceObservations[0],
+                                                                        originalImageSize: image.size,
+                                                                        inpaintColor: averageSkinColor) else {
                 return croppedImage }
             //            skinToneId = try await classifyFace(from: hollowedOutImage.cgImage!)
             guard let undertone = try? extractUndertone(from: inpaintedImage) else {
