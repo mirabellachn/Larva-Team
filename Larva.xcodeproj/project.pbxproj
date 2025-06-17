@@ -10,9 +10,22 @@
 		19C63F752DFAB7FC001C0609 /* Larva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Larva.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CBE20AAE2E013DEE00B51BE1 /* Exceptions for "Larva" folder in "Larva" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 19C63F742DFAB7FC001C0609 /* Larva */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		19C63F772DFAB7FC001C0609 /* Larva */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CBE20AAE2E013DEE00B51BE1 /* Exceptions for "Larva" folder in "Larva" target */,
+			);
 			path = Larva;
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,7 @@
 				DEVELOPMENT_TEAM = 6LM6CT6LR6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Larva/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"We need your camera to take your photo for skintone and undertone analysis.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -285,6 +299,7 @@
 				DEVELOPMENT_TEAM = 6LM6CT6LR6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Larva/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"We need your camera to take your photo for skintone and undertone analysis.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

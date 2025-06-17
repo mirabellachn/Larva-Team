@@ -4,10 +4,7 @@ struct GuidanceModalView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var offset: CGFloat = 0
-    @State private var lastOffset: CGFloat = 0
-    private let minHeight: CGFloat = 50
     private let cornerRadius: CGFloat = 20
-    
     private let guidanceItems = [
         "Be alone, no other faces in the frame.",
         "Keep your face bare, no makeup.",
@@ -19,123 +16,116 @@ struct GuidanceModalView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
+                // Grabber
                 Capsule()
-                    .fill(Color.secondary)
+                    .fill(Color.gray.opacity(0.4))
                     .frame(width: 40, height: 5)
-                    .padding(.top, 8)
+                    .padding(.top, 12)
+                    .padding(.bottom, 8)
                 
-                Spacer()
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("How to take the picture")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(Color(red: 0.72, green: 0.34, blue: 0.53))
-                            .padding(.leading, 15)
-                            .padding(.top, 30)
-                            .padding(.bottom, 8)
-                        
-                        Text("A simple guide to make your photo work better for the analysis!")
-                            .font(.title3)
-                            .foregroundColor(.black)
-                            .padding(.leading, 16)
-                            .padding(.bottom, 24)
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        VStack(spacing: 10) {
-                            HStack(spacing: 30) {
-                                ZStack(alignment: .bottom) {
-                                    Image("front-position")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 128, height: 192)
-                                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                                        .padding(.leading, 20)
-                                        .cornerRadius(16)
-                                    
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 36, height: 36)
-                                        .foregroundColor(.green)
-                                        .offset(y: 15)
-                                }
-                                
-                                ZStack(alignment: .bottom) {
-                                    Image("side-position")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 128, height: 192)
-                                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                                        .padding(.trailing, 20)
-                                        .cornerRadius(16)
-                                    
-                                    Image(systemName: "xmark.circle.fill")
-                                        .resizable()
-                                        .frame(width: 36, height: 36)
-                                        .foregroundColor(.red)
-                                        .offset(y: 15)
-                                }
-                            }
-                            .padding(.vertical, 8)
-                            
-                            ForEach(guidanceItems.indices, id: \.self) { index in
-                                HStack(alignment: .center, spacing: 10) {
-                                    Circle()
-                                        .frame(width: 44, height: 44)
-                                        .foregroundColor(Color(red: 217/255, green: 217/255, blue: 217/255))
-                                    
-                                    Text(guidanceItems[index])
-                                        .font(.body)
-                                        .foregroundColor(.primary)
-                                    
-                                    Spacer()
-                                }
+                // Header
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("The Do’s Before You Snap")
+                        .font(.custom("NewYorkMedium-Medium", size: 22))
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color(red: 0.72, green: 0.34, blue: 0.53))
+                        .padding(.horizontal, 16)
+                        .padding(.top, 32)
+                        .padding(.bottom, 8)
+                    
+                    Text("A simple guide to make your photo work better for the analysis!")
+                        .font(.system(size: 16))
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 24)
+                }
+                
+                // Images
+                VStack(spacing: 8) {
+                    HStack(spacing: 24) {
+                        ZStack(alignment: .bottom) {
+                            Image("front-position")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 128, height: 192)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
                                 .padding(.leading, 20)
-                            }
+                            
+                            Image(systemName: "checkmark.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 36, height: 36)
+                                .foregroundColor(Color(red: 156 / 255, green: 209 / 255, blue: 33 / 255))
+                                .offset(y: 15)
+                        }
+                        
+                        ZStack(alignment: .bottom) {
+                            Image("side-position")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 128, height: 192)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .padding(.trailing, 20)
+                            
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .frame(width: 36, height: 36)
+                                .foregroundColor(Color(red: 219/255, green: 83/255, blue: 109/255))
+                                .offset(y: 15)
                         }
                     }
+                    .padding(.vertical, 8)
+                    
+                    // Checklist
+                    ForEach(guidanceItems.indices, id: \.self) { index in
+                        HStack(spacing: 8) {
+                            Circle()
+                                .frame(width: 44, height: 44)
+                                .foregroundColor(Color(red: 217/255, green: 217/255, blue: 217/255))
+                            
+                            Text(guidanceItems[index])
+                                .font(.body)
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                    }
+                    
+                    Spacer(minLength: 22) // Pas sesuai permintaan
                 }
-                .frame(minHeight: 0)
-                .padding(.bottom, 0)
-                .background(
-                    Image("sub-background")
-                        .resizable()
-                        .scaledToFill()
-                )
-                .background(Color(.systemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .padding(.top, 12)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .background(
+                Image("sub-background")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            )
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
             .offset(y: offset)
             .gesture(
                 DragGesture()
-                    .onChanged { value in
-                        let newOffset = lastOffset + value.translation.height
-                        offset = max(minHeight, newOffset)
+                    .onChanged { gesture in
+                        if gesture.translation.height > 0 {
+                            offset = gesture.translation.height
+                        }
                     }
-                    .onEnded { value in
-                        lastOffset = offset
-                        if offset > geometry.size.height * 0.5 {
+                    .onEnded { _ in
+                        if offset > 150 {
                             dismiss()
+                        } else {
+                            withAnimation(.spring()) {
+                                offset = 0
+                            }
                         }
                     }
             )
-            .background(
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        dismiss()
-                    }
-            )
-            .ignoresSafeArea(.all, edges: .bottom)
-            .onAppear {
-                offset = 0
-                lastOffset = 0
-            }
         }
     }
 }
+
 
 struct GuidanceModalView_Previews: PreviewProvider {
     static var previews: some View {
@@ -143,5 +133,3 @@ struct GuidanceModalView_Previews: PreviewProvider {
     }
 }
 
-
-// cari tau automation modal -- bikin view full, ada 1 tombol ketika diklik, modalnya muncul -- 

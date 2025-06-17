@@ -4,8 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>NewYork.ttf</string>
 		<string>NewYorkMedium-Medium.otf</string>
+		<string>NewYorkSmall-Semibold.otf</string>
 	</array>
 </dict>
 </plist>
