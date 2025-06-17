@@ -9,15 +9,16 @@ import SwiftUI
 
 @MainActor
 class ImageProcessorViewModel: ObservableObject {
-    @Published private(set) var processedImage: UIImage?
-    @Published var isShowingResult = false
-
-    func onAppear(_ image: UIImage) {
+    func onAppear(_ image: UIImage, router: Router) {
         Task {
             do {
                 try await Task.sleep(for: .seconds(2))
-                self.processedImage = try await ImageProcessorService.process(image: image)
-                self.isShowingResult = self.processedImage != nil
+
+                let processor = ImageProcessorService()
+                guard let finalResult = try await processor.process(image: image) else { return }
+
+                // TODO: Get final result
+                router.navigate(to: .result(result: finalResult))
             } catch {}
         }
     }

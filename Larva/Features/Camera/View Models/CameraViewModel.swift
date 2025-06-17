@@ -30,11 +30,13 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
         self.router = router
         self.cameraService.delegate = self
     }
+
     func onAppear() {
         Task {
             await self.checkPermission()
         }
     }
+
     func onScenePhaseChange(scenePhase: ScenePhase) {
         if scenePhase == .active {
             self.cameraService.startSession()
@@ -42,9 +44,11 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             self.cameraService.stopSession()
         }
     }
+
     func onDissapear() {
         self.cameraService.stopSession()
     }
+
     func checkPermission() async {
         let granted = await self.cameraService.checkPermission()
         DispatchQueue.main.async {
@@ -56,6 +60,7 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             self.waitingPermission = false
         }
     }
+
     func capturePhoto() {
         #if targetEnvironment(simulator)
         self.mockCapturePhoto()
@@ -77,18 +82,21 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
         }
         #endif
     }
+    
     func mockCapturePhoto() {
         DispatchQueue.main.async {
             self.capturedImage = UIImage(named: "placeholder")
             self.isShowingResult = true
         }
     }
+    
     func clearCapturedPhoto() {
         self.capturedImage = nil
         self.isShowingResult = false
         self.isCapturing = false
         self.cameraService.startSession()
     }
+    
     nonisolated func faceDetection(didDetectFaces faces: [VNFaceObservation]) {
         // This is called on a background thread. Dispatch to the main thread for UI updates.
         DispatchQueue.main.async {
@@ -98,6 +106,7 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             }
         }
     }
+
     func openAppSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString),
               UIApplication.shared.canOpenURL(url)

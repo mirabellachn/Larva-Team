@@ -12,5 +12,5 @@ enum Route: Hashable {
     case camera
     case preview(image: UIImage)
     case imageProcessor(image: UIImage)
-    case result
+    case result(result: FinalResult)
 }

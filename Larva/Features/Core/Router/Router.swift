@@ -18,6 +18,10 @@ final class Router: ObservableObject {
         path.removeLast()
     }
 
+    func popToView(count: Int) {
+        path.removeLast(count)
+    }
+
     func navigateToRoot() {
         path.removeLast(path.count)
     }

@@ -28,10 +28,10 @@ class PreviewViewModel: ObservableObject {
     private func validateImage(_ image: UIImage) async throws -> PhotoCriteria {
         guard let (faceObservations, faceCaptureQualityResult, landmarksResult) = try await ImageProcessorService.visionProcess(image: image) else { return PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false) }
 
-        let minYaw = NSNumber(-0.15)
-        let maxYaw = NSNumber(0.15)
-        let minPitch = NSNumber(-0.15)
-        let maxPitch = NSNumber(0.15)
+        let minYaw = NSNumber(-0.18)
+        let maxYaw = NSNumber(0.18)
+        let minPitch = NSNumber(-0.18)
+        let maxPitch = NSNumber(0.18)
 
         let isOnlyOneFaceDetected = faceObservations.count == 1
         var isFacingCamera = false

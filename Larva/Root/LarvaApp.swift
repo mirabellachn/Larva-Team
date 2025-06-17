@@ -11,8 +11,8 @@ import SwiftUI
 @main
 struct LarvaApp: App {
     @StateObject private var router: Router
-    @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var cameraViewModel: CameraViewModel
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             FinalResult.self
@@ -36,18 +36,17 @@ struct LarvaApp: App {
         #endif
 
         _router = StateObject(wrappedValue: router)
-        _homeViewModel = StateObject(wrappedValue: HomeViewModel(haveResults: false))
         _cameraViewModel = StateObject(wrappedValue: cameraViewModel)
     }
 
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
-                HomeView(viewModel: homeViewModel)
+                HomeView()
                     .navigationDestination(for: Route.self) { route in
                         switch route {
                         case .home:
-                            HomeView(viewModel: homeViewModel)
+                            HomeView()
                         case .camera:
                             CameraView(cameraViewModel: cameraViewModel)
                         case .preview(let image):
@@ -56,8 +55,8 @@ struct LarvaApp: App {
                             }
                         case .imageProcessor(let image):
                             ImageProcessorView(image: image)
-                        case .result:
-                            ResultView()
+                        case .result(let result):
+                            ResultView(result: result)
                         }
                     }
             }

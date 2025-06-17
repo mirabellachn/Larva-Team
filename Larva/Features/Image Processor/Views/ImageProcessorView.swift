@@ -9,18 +9,26 @@ import SwiftUI
 
 struct ImageProcessorView: View {
     let image: UIImage
+
+    @EnvironmentObject var router: Router
     @StateObject private var imageProcessorViewModel = ImageProcessorViewModel()
 
     var body: some View {
         VStack {
             Text("Loading...")
+
+            #if DEBUG
+            Button {
+                router.navigateBack()
+            } label: {
+                Text("Back (debug only)")
+            }
+
+            #endif
         }
         .toolbar(.hidden)
-        .navigationDestination(isPresented: $imageProcessorViewModel.isShowingResult, destination: {
-            ResultView()
-        })
         .onAppear {
-            imageProcessorViewModel.onAppear(image)
+            imageProcessorViewModel.onAppear(image, router: router)
         }
     }
 }
