@@ -8,6 +8,8 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject var router: Router
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             // Exist State
@@ -26,7 +28,7 @@ struct HomeView: View {
                     // Result
                     // Button
                     Button(action: {
-                        // Action
+                        router.navigate(to: .camera)
                     }, label: {
                         Text("Take Another Analysis")
                             .foregroundStyle(Color.white)
@@ -55,8 +57,8 @@ struct HomeView: View {
                         .foregroundStyle(Color.pink)
                     // Button
                     Button(action: {
-                        // Action
-                    }, label: {
+                        router.navigate(to: .camera)
+                    }) {
                         Text("Take Analysis")
                             .foregroundStyle(Color.white)
                             .padding(.horizontal, 40)
@@ -64,14 +66,16 @@ struct HomeView: View {
                             .frame(width: 320, alignment: .center)
                             .background(Color(red: 0.72, green: 0.34, blue: 0.53))
                             .cornerRadius(32)
-                    })
+                    }
                 }
             }
         }
+        .toolbar(.hidden)
     }
 }
 
 #Preview {
     @Previewable @Environment(\.modelContext) var context
-    HomeView(viewModel: HomeViewModel(haveResults: true, context: context))
+
+    HomeView(viewModel: HomeViewModel(haveResults: true))
 }

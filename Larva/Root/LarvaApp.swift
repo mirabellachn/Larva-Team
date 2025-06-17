@@ -10,6 +10,9 @@ import SwiftUI
 
 @main
 struct LarvaApp: App {
+    @StateObject private var router: Router
+    @StateObject private var homeViewModel: HomeViewModel
+    @StateObject private var cameraViewModel: CameraViewModel
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             FinalResult.self
@@ -23,10 +26,44 @@ struct LarvaApp: App {
         }
     }()
 
+    init() {
+        let router = Router()
+
+        #if targetEnvironment(simulator)
+        let cameraViewModel = CameraViewModel(router: router, permissionGranted: true, waitingPermission: false)
+        #else
+        let cameraViewModel = CameraViewModel(router: router)
+        #endif
+
+        _router = StateObject(wrappedValue: router)
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(haveResults: false))
+        _cameraViewModel = StateObject(wrappedValue: cameraViewModel)
+    }
+
     var body: some Scene {
         WindowGroup {
-            RootView()
+            NavigationStack(path: $router.path) {
+                HomeView(viewModel: homeViewModel)
+                    .navigationDestination(for: Route.self) { route in
+                        switch route {
+                        case .home:
+                            HomeView(viewModel: homeViewModel)
+                        case .camera:
+                            CameraView(cameraViewModel: cameraViewModel)
+                        case .preview(let image):
+                            PreviewView(image: image) {
+                                cameraViewModel.clearCapturedPhoto()
+                            }
+                        case .imageProcessor(let image):
+                            ImageProcessorView(image: image)
+                        case .result:
+                            ResultView()
+                        }
+                    }
+            }
+            .accentColor(.main)
         }
         .modelContainer(sharedModelContainer)
+        .environmentObject(router)
     }
 }

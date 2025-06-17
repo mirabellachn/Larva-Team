@@ -2,11 +2,13 @@ import Foundation
 import SwiftUI
 
 struct ResultView: View {
+    @EnvironmentObject private var router: Router
+
     var body: some View {
         VStack(spacing: 24) {
             VStack {
                 // Title
-                HStack() {
+                HStack {
                     Text("Hi Mate!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -27,27 +29,25 @@ struct ResultView: View {
                         .font(.system(size: 16))
                     Circle()
                         .fill(Color.white)
-                        .stroke(Color.black, lineWidth: 1)    .frame(width: 100, height: 100)
+                        .stroke(Color.black, lineWidth: 1).frame(width: 100, height: 100)
                     Text("Light")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
                     Text("Kulit kamu terang")
                         .font(.system(size: 16))
-                    
                 }
-                //Undertone
+                // Undertone
                 VStack(alignment: .center, spacing: 8) {
                     Text("Undertone")
                         .font(.system(size: 16))
                     Circle()
                         .fill(Color.white)
-                        .stroke(Color.black, lineWidth: 1)    .frame(width: 100, height: 100)
+                        .stroke(Color.black, lineWidth: 1).frame(width: 100, height: 100)
                     Text("Cool")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
                     Text("Kulit kamu cool")
                         .font(.system(size: 16))
-                    
                 }
             }
             VStack {
@@ -55,11 +55,11 @@ struct ResultView: View {
                 HStack(spacing: 8) {
                     Circle()
                         .fill(Color.white)
-                        .stroke(Color.black, lineWidth: 1)    .frame(width: 24, height: 24)
+                        .stroke(Color.black, lineWidth: 1).frame(width: 24, height: 24)
                     Text("Complexion Shade")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
-                    
+
                     Spacer()
                 }
                 HStack {
@@ -69,15 +69,23 @@ struct ResultView: View {
                 }
             }
             Spacer()
-            
+
+            Button(action: {
+                router.navigateToRoot()
+            }) {
+                Text("Back to Home")
+            }
         }
         .padding(.leading, 16)
         .padding(.trailing, 16)
         .padding(.top, 32)
-        
+        .toolbar(.hidden)
     }
 }
 
 #Preview {
+    @Previewable @StateObject var router = Router()
+
     ResultView()
+        .environmentObject(router)
 }

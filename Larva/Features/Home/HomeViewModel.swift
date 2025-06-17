@@ -3,10 +3,10 @@ import SwiftData
 
 class HomeViewModel: ObservableObject {
     @Published private(set) var haveResults: Bool = false
-    private let context: ModelContext
-    init(haveResults: Bool, context: ModelContext) {
+//    private let context: ModelContext
+    init(haveResults: Bool) {
         self.haveResults = haveResults
-        self.context = context
+//        self.context = context
     }
     func setResult() {
         haveResults.toggle()

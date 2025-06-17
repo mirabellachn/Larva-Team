@@ -12,18 +12,22 @@ import SwiftUI
 @MainActor
 class CameraViewModel: ObservableObject, FaceDetectorDelegate {
     private let cameraService = CameraService()
+    private let router: Router?
     
-    @Published var captureSession: AVCaptureSession
-    @Published var permissionGranted: Bool = false
-    @Published var waitingPermission: Bool = true
-    @Published var capturedImage: UIImage? = nil
+    @Published private(set) var captureSession: AVCaptureSession
+    @Published private(set) var permissionGranted: Bool = false
+    @Published private(set) var waitingPermission: Bool = true
+    @Published private(set) var capturedImage: UIImage? = nil
+    @Published private(set) var faceBoundingBoxes: [CGRect] = []
+    @Published private(set) var faceCount: Int = 0
+    @Published private(set) var isCapturing: Bool = false
     @Published var isShowingResult = false
-    @Published var faceBoundingBoxes: [CGRect] = []
-    @Published var faceCount: Int = 0
-    @Published var isCapturing: Bool = false
     
-    init() {
+    init(router: Router? = nil, permissionGranted: Bool? = false, waitingPermission: Bool? = true) {
+        self.waitingPermission = waitingPermission ?? true
+        self.permissionGranted = permissionGranted ?? false
         self.captureSession = self.cameraService.captureSession
+        self.router = router
         self.cameraService.delegate = self
     }
     
@@ -61,19 +65,25 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
     }
     
     func capturePhoto() {
+        #if targetEnvironment(simulator)
+        self.mockCapturePhoto()
+        #else
         self.isCapturing = true
         self.cameraService.capturePhoto { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let data):
+                    guard let image = UIImage(data: data) else { return }
                     self?.capturedImage = UIImage(data: data)
                     self?.isShowingResult = true
                     self?.cameraService.stopSession()
+                    self?.router?.navigate(to: .preview(image: image))
                 case .failure(let error):
                     print("Error capturing photo: \(error.localizedDescription)")
                 }
             }
         }
+        #endif
     }
     
     func mockCapturePhoto() {
