@@ -12,7 +12,7 @@ import SwiftUI
 struct LarvaApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            FinalResult.self
+            FinalResult.self, Shade.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
