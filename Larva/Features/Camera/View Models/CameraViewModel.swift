@@ -12,24 +12,31 @@ import SwiftUI
 @MainActor
 class CameraViewModel: ObservableObject, FaceDetectorDelegate {
     private let cameraService = CameraService()
-    @Published var captureSession: AVCaptureSession
-    @Published var permissionGranted: Bool = false
-    @Published var waitingPermission: Bool = true
-    @Published var capturedImage: UIImage? = nil
+    private let router: Router?
+    
+    @Published private(set) var captureSession: AVCaptureSession
+    @Published private(set) var permissionGranted: Bool = false
+    @Published private(set) var waitingPermission: Bool = true
+    @Published private(set) var capturedImage: UIImage? = nil
+    @Published private(set) var faceBoundingBoxes: [CGRect] = []
+    @Published private(set) var faceCount: Int = 0
+    @Published private(set) var isCapturing: Bool = false
     @Published var isShowingResult = false
-    @Published var faceBoundingBoxes: [CGRect] = []
-    @Published var faceCount: Int = 0
-    @Published var isCapturing: Bool = false
-    // Init
-    init() {
+    
+    init(router: Router? = nil, permissionGranted: Bool? = false, waitingPermission: Bool? = true) {
+        self.waitingPermission = waitingPermission ?? true
+        self.permissionGranted = permissionGranted ?? false
         self.captureSession = self.cameraService.captureSession
+        self.router = router
         self.cameraService.delegate = self
     }
+
     func onAppear() {
         Task {
             await self.checkPermission()
         }
     }
+
     func onScenePhaseChange(scenePhase: ScenePhase) {
         if scenePhase == .active {
             self.cameraService.startSession()
@@ -37,9 +44,11 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             self.cameraService.stopSession()
         }
     }
+
     func onDissapear() {
         self.cameraService.stopSession()
     }
+
     func checkPermission() async {
         let granted = await self.cameraService.checkPermission()
         DispatchQueue.main.async {
@@ -51,33 +60,43 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             self.waitingPermission = false
         }
     }
+
     func capturePhoto() {
+        #if targetEnvironment(simulator)
+        self.mockCapturePhoto()
+        #else
         self.isCapturing = true
         self.cameraService.capturePhoto { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let data):
+                    guard let image = UIImage(data: data) else { return }
                     self?.capturedImage = UIImage(data: data)
                     self?.isShowingResult = true
                     self?.cameraService.stopSession()
+                    self?.router?.navigate(to: .preview(image: image))
                 case .failure(let error):
                     print("Error capturing photo: \(error.localizedDescription)")
                 }
             }
         }
+        #endif
     }
+    
     func mockCapturePhoto() {
         DispatchQueue.main.async {
             self.capturedImage = UIImage(named: "placeholder")
             self.isShowingResult = true
         }
     }
+    
     func clearCapturedPhoto() {
         self.capturedImage = nil
         self.isShowingResult = false
         self.isCapturing = false
         self.cameraService.startSession()
     }
+    
     nonisolated func faceDetection(didDetectFaces faces: [VNFaceObservation]) {
         // This is called on a background thread. Dispatch to the main thread for UI updates.
         DispatchQueue.main.async {
@@ -87,6 +106,7 @@ class CameraViewModel: ObservableObject, FaceDetectorDelegate {
             }
         }
     }
+
     func openAppSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString),
               UIApplication.shared.canOpenURL(url)

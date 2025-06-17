@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct EmptyStateView: View {
+    @EnvironmentObject var router: Router
+
     var body: some View {
         VStack {
             VStack(spacing: 8) {
@@ -20,30 +22,38 @@ struct EmptyStateView: View {
                 HStack {
                     Text("Let’s discover your most likely complexion shade match in just a few taps 🚀")
                         .font(.system(size: 16))
+                        .foregroundStyle(.black)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: 320, alignment: .leading)
                     Spacer()
                 }
             }
             .padding(.bottom, 16)
+
             VStack(alignment: .leading, spacing: 24) {
                 Circle()
                     .frame(height: 440)
             }
+
+            Spacer()
+
             // Home page button
-            NavigationLink(destination: {
-                CameraView()
+            Button(action: {
+                router.navigate(to: .camera)
             }, label: {
                 Text("Take Analysis")
-                    .modifier(ButtonModifier())
+                    .frame(maxWidth: .infinity)
             })
-            .padding(.top, 124)
-            .padding(.bottom, 20)
+            .modifier(ButtonModifier())
         }
-        .padding(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+        .padding(.horizontal, 24)
+        .padding(.vertical, 32)
     }
 }
 
-#Preview{
+#Preview {
+    @Previewable @StateObject var router = Router()
+
     EmptyStateView()
+        .environmentObject(router)
 }

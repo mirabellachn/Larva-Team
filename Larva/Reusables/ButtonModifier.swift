@@ -17,7 +17,6 @@ struct ButtonModifier: ViewModifier {
             .foregroundColor(.white)
             .padding(.horizontal, 40)
             .padding(.vertical, 16)
-            .frame(width: 320, alignment: .center)
             .background(
                 ZStack {
                     Color(red: 0.72, green: 0.34, blue: 0.53)

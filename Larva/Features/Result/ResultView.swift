@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//struct ResultView: View {
+// struct ResultView: View {
 //    var result: FinalResult
 //    var body: some View {
 //        // Body
@@ -84,29 +84,30 @@ import SwiftUI
 //            .padding(.bottom, 44)
 //        }
 //    }
-//}
+// }
 
 struct ResultView: View {
     var result: FinalResult
     @EnvironmentObject var homeViewModel: HomeViewModel
+    @EnvironmentObject private var router: Router
 
     var body: some View {
-        NavigationStack {
-            ZStack{
-                Image("Result Page")
-                    .resizable()
-                    .ignoresSafeArea(.all)
-                VStack(spacing: 0) {
-                    mainContent
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 32)
+        ZStack {
+            Image("Result Page")
+                .resizable()
+                .ignoresSafeArea(.all)
+            VStack(spacing: 0) {
+                mainContent
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 32)
 
-                    actionButtons
-                        .padding(.top, 60)
-                        .padding(.bottom, 44)
-                }
+                actionButtons
+                    .padding(.top, 60)
+                    .padding(.bottom, 44)
+                    .padding(.horizontal, 36)
             }
         }
+        .toolbar(.hidden)
     }
 
     private var mainContent: some View {
@@ -172,10 +173,10 @@ struct ResultView: View {
     private var descriptionText: some View {
         (
             Text("You have ")
-            + Text("\(result.skinTone) skintone").fontWeight(.bold)
-            + Text(" with ")
-            + Text("\(result.underTone) undertone").fontWeight(.bold)
-            + Text(". Your tone is likely to suit the complexion shade below.")
+                + Text("\(result.skinTone) skintone").fontWeight(.bold)
+                + Text(" with ")
+                + Text("\(result.underTone) undertone").fontWeight(.bold)
+                + Text(". Your tone is likely to suit the complexion shade below.")
         )
         .font(.system(size: 16))
         .multilineTextAlignment(.center)
@@ -187,12 +188,17 @@ struct ResultView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 24) {
-            NavigationLink(destination: HomeView(viewModel: homeViewModel, result: result)) {
+            Button(action: {
+                router.navigateToRoot()
+            }) {
                 Text("Save to Home Page")
-                    .modifier(ButtonModifier())
+                    .frame(maxWidth: .infinity)
             }
+            .modifier(ButtonModifier())
 
-            NavigationLink(destination: CameraView()) {
+            Button(action: {
+                router.popToView(count: 3)
+            }) {
                 Text("Take Another Analysis")
                     .font(.system(size: 16))
                     .underline(true)
@@ -210,7 +216,7 @@ struct ResultView: View {
         Shade(shade: "Ivory"),
         Shade(shade: "Light")
     ]
-    
+
     let dummyResult = FinalResult(
         skinTone: "Light",
         underTone: "Cool",
@@ -218,9 +224,5 @@ struct ResultView: View {
         shades: dummyShades
     )
 
-    let dummyViewModel = HomeViewModel(haveResults: false)
-
-    return ResultView(result: dummyResult)
-        .environmentObject(dummyViewModel)
+    ResultView(result: dummyResult)
 }
-

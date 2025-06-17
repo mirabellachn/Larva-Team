@@ -16,16 +16,18 @@ struct CameraPermissionDeniedView: View {
                 .font(.title)
                 .bold()
                 .padding()
+                .foregroundStyle(.black)
 
             Text("Please enable camera access in your device settings to continue.")
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+                .foregroundStyle(.black)
 
             Button("Open Settings") {
                 cameraViewModel.openAppSettings()
             }
             .padding()
-            .background(Color.blue)
+            .background(.main)
             .foregroundColor(.white)
             .clipShape(Capsule())
             .padding(.top)
@@ -37,4 +39,8 @@ struct CameraPermissionDeniedView: View {
     @Previewable @StateObject var cameraViewModel = CameraViewModel()
 
     CameraPermissionDeniedView(cameraViewModel: cameraViewModel)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            CameraBackgroundView()
+        )
 }

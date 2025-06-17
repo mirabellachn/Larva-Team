@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ExistStateView: View {
     var result: FinalResult
+    @EnvironmentObject var router: Router
+
     var body: some View {
         VStack {
             VStack(spacing: 8) {
@@ -40,7 +42,7 @@ struct ExistStateView: View {
                     // Undertone
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Undertone")
-                        .font(.custom("NewYorkSmall-Semibold", size: 16))
+                            .font(.custom("NewYorkSmall-Semibold", size: 16))
                         SkinToneCardView(skinToneColor: result.underTone,
                                          skinToneScale: "Purple or bluish veins",
                                          image: result.underTone)
@@ -82,8 +84,8 @@ struct ExistStateView: View {
             }
             .frame(height: 440)
             // Home page button
-            NavigationLink(destination: {
-                CameraView()
+            Button(action: {
+                router.navigate(to: .camera)
             }, label: {
                 Text("Try Another Analysis")
                     .modifier(ButtonModifier())
