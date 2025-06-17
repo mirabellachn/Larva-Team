@@ -5,15 +5,13 @@ struct LoadingPageView: View {
 
     var body: some View {
         ZStack {
-            // Background
             Image("loading-page")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 21) {
-                // Bouncing Image
-                Image(isAtTop ? "dee2" : "dee1") //
+                Image(isAtTop ? "dee2" : "dee1")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 150, height: 150)
@@ -23,7 +21,6 @@ struct LoadingPageView: View {
                         value: isAtTop
                     )
 
-                // Text
                 Text("Dee’s analyzing your tone\nto find match shade for you!")
                     .foregroundColor(.black)
                     .font(.system(size: 18, weight: .regular, design: .rounded))
@@ -38,7 +35,6 @@ struct LoadingPageView: View {
         }
     }
 
-    // Custom bounce loop with different delays
     func startBounceLoop() {
         Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
             withAnimation {
@@ -47,8 +43,7 @@ struct LoadingPageView: View {
             
             timer.invalidate()
 
-            // Delay berbeda tergantung posisi
-            let delay = isAtTop ? 0.4 : 0.7 // dee2 (atas) sebentar, dee1 (bawah) lebih lama
+            let delay = isAtTop ? 0.4 : 0.7
 
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 startBounceLoop()
