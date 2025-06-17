@@ -91,12 +91,10 @@ struct CameraPreview: UIViewRepresentable {
     func updateUIView(_ uiView: UIView, context: Context) {
         // No update needed for now
     }
-    
     private class PreviewView: UIView {
         override class var layerClass: AnyClass {
             return AVCaptureVideoPreviewLayer.self
         }
-        
         var videoPreviewLayer: AVCaptureVideoPreviewLayer {
             guard let layer = self.layer as? AVCaptureVideoPreviewLayer else {
                 fatalError("Expected layer to be of type AVCaptureVideoPreviewLayer")

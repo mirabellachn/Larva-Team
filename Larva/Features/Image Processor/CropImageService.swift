@@ -13,7 +13,9 @@ class CropImageService {
         guard let orientedImage = image.orientedCorrectly() else { return nil }
         guard let orientedCgImage = orientedImage.cgImage else { return nil }
 
-        let rect = VNImageRectForNormalizedRect(landmarkResult.boundingBox.flipY(), Int(image.size.width), Int(image.size.height))
+        let rect = VNImageRectForNormalizedRect(landmarkResult.boundingBox.flipY(),
+                                                Int(image.size.width),
+                                                Int(image.size.height))
         var padding: CGFloat = 100.0
         if rect.size.width < 500 {
             padding = 50.0
