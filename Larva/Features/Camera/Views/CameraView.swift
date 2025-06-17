@@ -9,82 +9,88 @@ import AVFoundation
 import SwiftUI
 
 struct CameraView: View {
-    @StateObject private var cameraViewModel = CameraViewModel()
+    @StateObject var cameraViewModel: CameraViewModel
+    @EnvironmentObject var router: Router
     @Environment(\.scenePhase) var scenePhase
     var body: some View {
-        NavigationStack {
-            ZStack {
-                if !cameraViewModel.waitingPermission {
-                    if cameraViewModel.permissionGranted {
-                        if scenePhase == .active {
+        VStack {
+            if !self.cameraViewModel.waitingPermission {
+                if self.cameraViewModel.permissionGranted {
+                    ZStack {
+                        if self.scenePhase == .active {
                             GeometryReader { geometry in
-                                CameraPreview(session: cameraViewModel.captureSession)
+                                CameraViewFinder(session: self.cameraViewModel.captureSession)
                                     .ignoresSafeArea()
                                     .background(.black)
                                     .clipShape(RoundedRectangle(cornerRadius: 36))
                                 // Only shows if detected face is only one
-                                if cameraViewModel.faceCount == 1 {
+                                if self.cameraViewModel.faceCount == 1 {
                                     FaceBoundingBoxOverlayView(
-                                        boxes: cameraViewModel.faceBoundingBoxes,
-                                        previewSize: geometry.size
+                                        boxes: self.cameraViewModel.faceBoundingBoxes,
+                                        previewSize: geometry.size,
                                     )
                                 }
                             }
                         } else {
-                            Rectangle()
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .foregroundStyle(.black)
-                                .ignoresSafeArea()
+                            CameraEmptyStateView()
                         }
-                        VStack {
-                            Spacer()
-                            WarningPillView(state: cameraViewModel.faceCount == 1 ? .faceFound : cameraViewModel.faceCount > 0 ? .faceMoreThanOne : .faceNotFound)
-                            Button(action: {
-#if targetEnvironment(simulator)
-                                cameraViewModel.mockCapturePhoto()
-#else
-                                cameraViewModel.capturePhoto()
-#endif
-                            }, label: {
-                                Image(systemName: "camera.circle.fill")
-                                    .font(.system(size: 64))
-                                    .foregroundColor(.white)
-                            })
-                            .disabled(cameraViewModel.faceCount != 1)
-                            .padding(.bottom, 30)
+                        if !self.cameraViewModel.waitingPermission, self.cameraViewModel.permissionGranted {
+                            CameraUIView(cameraViewModel: self.cameraViewModel)
                         }
-                    } else {
-                        CameraPermissionDeniedView(cameraViewModel: cameraViewModel)
                     }
+                    .padding(.horizontal)
+                    .padding(.top)
+                
+                } else {
+                    CameraPermissionDeniedView(cameraViewModel: self.cameraViewModel)
                 }
-            }
-            .navigationDestination(isPresented: $cameraViewModel.isShowingResult) {
-                // TODO: Process image to the next screen flow
-                if let image = cameraViewModel.capturedImage {
-                    PreviewView(image: image) {
-                        cameraViewModel.clearCapturedPhoto()
-                    }
-                }
+            } else {
+                CameraEmptyStateView()
+                    .padding(.horizontal)
+                    .padding(.top)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            CameraBackgroundView()
+        )
         .navigationBarBackButtonHidden(true)
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarLeading, content: {
+                Button(action: {
+                    self.router.navigateBack()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.main)
+                }
+                .padding(.leading)
+            })
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}) {
+                    Image(systemName: "book.pages.fill")
+                        .foregroundStyle(.main)
+                }
+                .padding(.trailing)
+            }
+        })
         .onAppear {
-            cameraViewModel.onAppear()
+            self.cameraViewModel.onAppear()
         }
-        .onChange(of: scenePhase) {
-            cameraViewModel.onScenePhaseChange(scenePhase: scenePhase)
+        .onChange(of: self.scenePhase) {
+            self.cameraViewModel.onScenePhaseChange(scenePhase: self.scenePhase)
         }
         .onDisappear {
-            cameraViewModel.onDissapear()
+            self.cameraViewModel.onDissapear()
         }
     }
 }
 
-struct CameraPreview: UIViewRepresentable {
+struct CameraViewFinder: UIViewRepresentable {
     let session: AVCaptureSession
     func makeUIView(context: Context) -> UIView {
         let previewView = PreviewView()
-        previewView.videoPreviewLayer.session = session
+        
+        previewView.videoPreviewLayer.session = self.session
         previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         return previewView
     }
@@ -105,5 +111,7 @@ struct CameraPreview: UIViewRepresentable {
 }
 
 #Preview {
-    CameraView()
+    NavigationStack {
+        CameraView(cameraViewModel: CameraViewModel(permissionGranted: true, waitingPermission: true))
+    }
 }

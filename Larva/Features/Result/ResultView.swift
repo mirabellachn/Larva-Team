@@ -90,6 +90,8 @@ struct ResultView: View {
     var result: FinalResult
     @EnvironmentObject var homeViewModel: HomeViewModel
 
+    @EnvironmentObject private var router: Router
+
     var body: some View {
         NavigationStack {
             ZStack{

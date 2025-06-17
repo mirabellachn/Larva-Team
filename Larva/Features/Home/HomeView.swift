@@ -8,7 +8,9 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject var router: Router
     var result: FinalResult
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             NavigationStack {
@@ -30,6 +32,7 @@ struct HomeView: View {
                 }
             }
         }
+        .toolbar(.hidden)
     }
 }
 
