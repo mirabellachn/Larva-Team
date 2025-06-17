@@ -2,130 +2,110 @@ import SwiftUI
 
 struct GuidanceModalView: View {
     @Environment(\.dismiss) private var dismiss
-    
     @State private var offset: CGFloat = 0
+    
     private let cornerRadius: CGFloat = 20
-    private let guidanceItems = [
-        "Be alone, no other faces in the frame.",
-        "Keep your face bare, no makeup.",
-        "Look into the rear camera.",
-        "Use the volume button to snap a pic.",
-        "Be ready, flash turn on automatically.",
+    private let guidanceItems: [(icon: String, text: String)] = [
+        ("person.fill", "Be alone, no other faces in the frame."),
+        ("face.smiling", "Bare face and no accessories"),
+        ("viewfinder", "Look into the rear camera"),
+        ("camera.fill", "Use the volume button to snap a pic."),
+        ("bolt.fill", "Be ready, flash turn on automatically!")
     ]
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                // Grabber
-                Capsule()
-                    .fill(Color.gray.opacity(0.4))
-                    .frame(width: 40, height: 5)
-                    .padding(.top, 12)
-                    .padding(.bottom, 8)
+        ZStack {
+            Image("sub-background")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            VStack(spacing: 16) {
+                Spacer().frame(height: 100)
                 
-                // Header
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("The Do’s Before You Snap")
-                        .font(.custom("NewYorkMedium-Medium", size: 22))
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color(red: 0.72, green: 0.34, blue: 0.53))
-                        .padding(.horizontal, 16)
-                        .padding(.top, 32)
-                        .padding(.bottom, 8)
+                        .font(.custom("NewYorkLarge-Semibold", size: 22))
+                        .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
                     
                     Text("A simple guide to make your photo work better for the analysis!")
                         .font(.system(size: 16))
                         .foregroundColor(.black)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 24)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24)
+                
+                
+                HStack(spacing: 24) {
+                    ZStack(alignment: .bottom) {
+                        Image("front-position")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 128, height: 192)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                        Image("checkmark")
+                            .resizable()
+                            .frame(width: 36, height: 36)
+                            .foregroundColor(Color(red: 0.61, green: 0.82, blue: 0.13))
+                            .offset(y: 15)
+                    }
+                    
+                    ZStack(alignment: .bottom) {
+                        Image("side-position")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 128, height: 192)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                        Image("xmark")
+                            .resizable()
+                            .frame(width: 36, height: 36)
+                            .foregroundColor(Color(red: 0.86, green: 0.33, blue: 0.43))
+                            .offset(y: 15)
+                    }
                 }
                 
-                // Images
-                VStack(spacing: 8) {
-                    HStack(spacing: 24) {
-                        ZStack(alignment: .bottom) {
-                            Image("front-position")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 128, height: 192)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                                .padding(.leading, 20)
-                            
-                            Image(systemName: "checkmark.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 36, height: 36)
-                                .foregroundColor(Color(red: 156 / 255, green: 209 / 255, blue: 33 / 255))
-                                .offset(y: 15)
-                        }
-                        
-                        ZStack(alignment: .bottom) {
-                            Image("side-position")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 128, height: 192)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                                .padding(.trailing, 20)
-                            
-                            Image(systemName: "xmark.circle.fill")
-                                .resizable()
-                                .frame(width: 36, height: 36)
-                                .foregroundColor(Color(red: 219/255, green: 83/255, blue: 109/255))
-                                .offset(y: 15)
-                        }
-                    }
-                    .padding(.vertical, 8)
-                    
-                    // Checklist
-                    ForEach(guidanceItems.indices, id: \.self) { index in
+                Spacer().frame(height: 0)
+                
+                // Checklist
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(guidanceItems, id: \.text) { item in
                         HStack(spacing: 8) {
-                            Circle()
+                            Image(iconName(for: item.icon))
+                                .resizable()
+                                .scaledToFit()
                                 .frame(width: 44, height: 44)
-                                .foregroundColor(Color(red: 217/255, green: 217/255, blue: 217/255))
+                                .padding(5)
+                                .clipShape(Circle())
                             
-                            Text(guidanceItems[index])
-                                .font(.body)
-                                .foregroundColor(.primary)
+                            Text(item.text)
+                                .foregroundColor(.black)
+                                .font(.system(size: 16))
                             
                             Spacer()
                         }
-                        .padding(.leading, 20)
                     }
-                    
-                    Spacer(minLength: 22) // Pas sesuai permintaan
                 }
-                .padding(.top, 12)
+                .padding(.horizontal, 16)
+                
+                Spacer(minLength: 20)
             }
-            .background(
-                Image("sub-background")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-            )
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
-            .offset(y: offset)
-            .gesture(
-                DragGesture()
-                    .onChanged { gesture in
-                        if gesture.translation.height > 0 {
-                            offset = gesture.translation.height
-                        }
-                    }
-                    .onEnded { _ in
-                        if offset > 150 {
-                            dismiss()
-                        } else {
-                            withAnimation(.spring()) {
-                                offset = 0
-                            }
-                        }
-                    }
-            )
+        }
+    }
+    
+    private func iconName(for systemIcon: String) -> String {
+        switch systemIcon {
+        case "person.fill": return "person-fill"
+        case "face.smiling": return "no-acc"
+        case "viewfinder": return "rear-camera"
+        case "camera.fill": return "volume-button"
+        case "bolt.fill": return "flash"
+        default: return "placeholder-icon"
         }
     }
 }
-
 
 struct GuidanceModalView_Previews: PreviewProvider {
     static var previews: some View {

@@ -5,7 +5,6 @@
 //  Created by Mirabella on 17/06/25.
 //
 
-
 import SwiftUI
 
 struct RootView: View {
@@ -24,11 +23,14 @@ struct RootView: View {
                     .cornerRadius(12)
             }
         }
-        .fullScreenCover(isPresented: $showGuidance) {
+        .sheet(isPresented: $showGuidance) {
             GuidanceModalView()
+                .presentationDetents([.fraction(0.9)])
+                .presentationDragIndicator(.visible)
         }
     }
 }
+
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {

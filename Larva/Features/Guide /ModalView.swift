@@ -21,7 +21,6 @@ struct ModalView<Content: View>: View {
 
     var body: some View {
         GeometryReader { geometry in
-//            let modalHeight = geometry.size.height * 0.7 // 70% tinggi layar
 
             ZStack(alignment: .bottom) {
                 if isPresented {
@@ -49,7 +48,7 @@ struct ModalView<Content: View>: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-//                .frame(maxWidth: .infinity, height: modalHeight)
+
                 .background(Color(.systemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 .offset(y: isPresented ? max(offset, 0) : geometry.size.height)
@@ -80,7 +79,6 @@ struct ModalView<Content: View>: View {
 struct ModalView_Previews: PreviewProvider {
     static var previews: some View {
         ModalView(isPresented: .constant(true)) {
-            // Contoh konten modal
             VStack(spacing: 16) {
                 Text("Reusable Modal")
                     .font(.title2)
