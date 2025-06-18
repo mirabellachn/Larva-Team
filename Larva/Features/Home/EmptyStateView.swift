@@ -35,9 +35,7 @@ struct EmptyStateView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(maxHeight: 480)
                     .frame(maxWidth: .infinity)
-            
             Spacer()
-
             // Home page button
             Button(action: {
                 router.navigate(to: .camera)

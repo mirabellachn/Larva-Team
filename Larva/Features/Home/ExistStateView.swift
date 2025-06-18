@@ -9,25 +9,15 @@ import SwiftUI
 struct ExistStateView: View {
     var result: FinalResult
     @EnvironmentObject var router: Router
-
     var body: some View {
-        VStack {
-            VStack(spacing: 8) {
-                // Title
-                HStack {
-                    Text("Hi, Shade Seeker!")
-                        .modifier(HeaderTextFormat())
-                    Spacer()
-                }
-                // SubTitle
-                HStack {
-                    Text("Your most recent analysis is in! Let’s take a look at your tone and shade 🎨")
-                        .font(.system(size: 16))
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: 320, alignment: .leading)
-                        .padding(.bottom, 8)
-                    Spacer()
-                }
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Hi, Shade Seeker!")
+                    .modifier(HeaderTextFormat())
+                Text("Your most recent analysis is in! Let’s take a look at your tone and shade 🎨")
+                    .font(.system(size: 16))
+                    .multilineTextAlignment(.leading)
+                    .padding(.bottom, 8)
             }
             .padding(.bottom, 8)
             VStack(alignment: .leading, spacing: 24) {
@@ -63,8 +53,10 @@ struct ExistStateView: View {
                             .fill(
                                 EllipticalGradient(
                                     stops: [
-                                        .init(color: Color(red: 0.72, green: 0.34, blue: 0.53).opacity(0.5), location: 0),
-                                        .init(color: Color(red: 0.98, green: 0.95, blue: 0.95).opacity(0.5), location: 1)
+                                        .init(color:
+                                                Color(red: 0.72, green: 0.34, blue: 0.53).opacity(0.5), location: 0),
+                                        .init(color:
+                                                Color(red: 0.98, green: 0.95, blue: 0.95).opacity(0.5), location: 1)
                                     ],
                                     center: .center
                                 )
@@ -79,17 +71,19 @@ struct ExistStateView: View {
                             }
                         }
                     }
-                    .frame(width: 355, height: 170)
                 }
             }
-            .frame(height: 440)
             // Home page button
-            Button(action: {
-                router.navigate(to: .camera)
-            }, label: {
-                Text("Try Another Analysis")
-                    .modifier(ButtonModifier())
-            })
+            HStack {
+                Spacer()
+                Button(action: {
+                    router.navigate(to: .camera)
+                }, label: {
+                    Text("Try Another Analysis")
+                        .modifier(ButtonModifier())
+                })
+                Spacer()
+            }
             .padding(.top, 124)
             .padding(.bottom, 20)
         }

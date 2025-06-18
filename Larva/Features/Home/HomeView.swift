@@ -40,18 +40,6 @@ struct HomeView: View {
 
 #Preview {
     @Previewable @StateObject var router = Router()
-//    let dummyShades = [
-//        Shade(shade: "Light Ivory"),
-//        Shade(shade: "Ivory"),
-//        Shade(shade: "Light")
-//    ]
-//    let dummyResult = FinalResult(
-//        skinTone: "Light",
-//        underTone: "Cool",
-//        scale: "1",
-//        shades: dummyShades
-//    )
-
     HomeView()
         .environmentObject(router)
 }

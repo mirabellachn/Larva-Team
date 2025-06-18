@@ -12,7 +12,6 @@ struct ResultView: View {
     var result: FinalResult
     @EnvironmentObject var homeViewModel: HomeViewModel
     @EnvironmentObject private var router: Router
-
     var body: some View {
         ZStack {
             Image("Result Page")
@@ -22,7 +21,6 @@ struct ResultView: View {
                 mainContent
                     .padding(.horizontal, 24)
                     .padding(.vertical, 32)
-
                 actionButtons
                     .padding(.top, 60)
                     .padding(.bottom, 44)
@@ -31,7 +29,6 @@ struct ResultView: View {
         }
         .toolbar(.hidden)
     }
-
     private var mainContent: some View {
         VStack(alignment: .center, spacing: 24) {
             Text("Based on your skin tone ")
@@ -39,17 +36,14 @@ struct ResultView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .top)
-
+          
             Image(result.scale)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 169, height: 120)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-
             toneInfoSection
-
             descriptionText
-
             ZStack {
                 // Background gradient
                 RoundedRectangle(cornerRadius: 12)
@@ -75,7 +69,6 @@ struct ResultView: View {
             .frame(width: 355, height: 170)
         }
     }
-
     private var toneInfoSection: some View {
         VStack(spacing: 5) {
             Text("we think you are a")
@@ -83,7 +76,6 @@ struct ResultView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .top)
-
             Text("\(result.skinTone) \(result.underTone) Person")
                 .font(Font.custom("NewYorkSmall-SemiBold", size: 24))
                 .multilineTextAlignment(.center)
@@ -91,14 +83,13 @@ struct ResultView: View {
                 .frame(maxWidth: .infinity, alignment: .top)
         }
     }
-
     private var descriptionText: some View {
         (
             Text("You have ")
-                + Text("\(result.skinTone) skintone").fontWeight(.bold)
-                + Text(" with ")
-                + Text("\(result.underTone) undertone").fontWeight(.bold)
-                + Text(". Your tone is likely to suit the complexion shade below.")
+            + Text("\(result.skinTone) skintone").fontWeight(.bold)
+            + Text(" with ")
+            + Text("\(result.underTone) undertone").fontWeight(.bold)
+            + Text(". Your tone is likely to suit the complexion shade below.")
         )
         .font(.system(size: 16))
         .multilineTextAlignment(.center)
@@ -107,29 +98,27 @@ struct ResultView: View {
         .padding(10)
         .padding(.horizontal, 6)
     }
-
     private var actionButtons: some View {
         VStack(spacing: 24) {
             Button(action: {
                 modelContext.insert(result)
                 try? modelContext.save()
                 router.navigateToRoot()
-            }) {
+            }, label: {
                 Text("Save to Home Page")
                     .frame(maxWidth: .infinity)
-            }
+            })
             .modifier(ButtonModifier())
-
             Button(action: {
                 router.popToView(count: 3)
-            }) {
+            }, label: {
                 Text("Take Another Analysis")
                     .font(.system(size: 16))
                     .underline(true)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
                     .frame(maxWidth: .infinity, alignment: .top)
-            }
+            })
         }
     }
 }
@@ -140,13 +129,11 @@ struct ResultView: View {
         Shade(shade: "Ivory"),
         Shade(shade: "Light")
     ]
-
     let dummyResult = FinalResult(
         skinTone: "Light",
         underTone: "Cool",
         scale: "1",
         shades: dummyShades
-    )
-
+        )
     ResultView(result: dummyResult)
 }
