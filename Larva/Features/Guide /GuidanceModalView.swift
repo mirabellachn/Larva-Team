@@ -3,7 +3,6 @@ import SwiftUI
 struct GuidanceModalView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var offset: CGFloat = 0
-    
     private let cornerRadius: CGFloat = 20
     private let guidanceItems: [(icon: String, text: String)] = [
         ("person.fill", "Be alone, no other faces in the frame."),
@@ -12,7 +11,7 @@ struct GuidanceModalView: View {
         ("camera.fill", "Use the volume button to snap a pic."),
         ("bolt.fill", "Be ready, flash turn on automatically!")
     ]
-    
+    // Body
     var body: some View {
         VStack(spacing: 16) {
             Capsule()
