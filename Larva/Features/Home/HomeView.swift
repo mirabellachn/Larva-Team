@@ -21,12 +21,12 @@ struct HomeView: View {
                         .resizable()
                         .ignoresSafeArea(.all)
 
-                    ExistStateView(result: result[0])
+                    ExistStateView(result: result.last!)
                         .environmentObject(router)
                 }
             } else { // Empty State
                 ZStack {
-                    Image("Home Page (State)")
+                    Image("Home Page (Empty State)")
                         .resizable()
                         .ignoresSafeArea(.all)
                     EmptyStateView()

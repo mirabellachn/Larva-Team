@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ResultView: View {
+    @Environment(\.modelContext) private var modelContext
     var result: FinalResult
     @EnvironmentObject var homeViewModel: HomeViewModel
     @EnvironmentObject private var router: Router
@@ -35,9 +36,10 @@ struct ResultView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .top)
-            Image(result.skinTone)
+          
+            Image(result.scale)
                 .resizable()
-                .aspectRatio(contentMode: .fill)
+                .aspectRatio(contentMode: .fit)
                 .frame(width: 169, height: 120)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             toneInfoSection
@@ -58,13 +60,13 @@ struct ResultView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color(red: 0.89, green: 0.8, blue: 0.85).opacity(0.3), lineWidth: 1)
                 // Content (shade name + dummy color)
-                HStack(spacing: 0) {
+                HStack(spacing: -20) {
                     ForEach(result.shades, id: \.shade) { shade in
                         ShadeRecommendationView(shade: shade)
-                            .padding(.top, 8)
                     }
                 }
             }
+            .frame(width: 355, height: 170)
         }
     }
     private var toneInfoSection: some View {
@@ -99,6 +101,8 @@ struct ResultView: View {
     private var actionButtons: some View {
         VStack(spacing: 24) {
             Button(action: {
+                modelContext.insert(result)
+                try? modelContext.save()
                 router.navigateToRoot()
             }, label: {
                 Text("Save to Home Page")

@@ -46,16 +46,34 @@ class ImageProcessorService {
                                                                         landmarks: landmarksResult,
                                                                         inpaintColor: averageSkinColor) else { return nil }
 
-            guard let skinTone = try await classifySkinTone(from: inpaintedImage) else { return nil }
+            guard let skinToneScale = try await classifySkinTone(from: inpaintedImage) else { return nil }
             guard let underTone = try extractUndertone(from: inpaintedImage) else { return nil }
-
-            return FinalResult(skinTone: "Type \(skinTone)", underTone: underTone, scale: "", shades: [])
+            var skinTone: String
+            switch skinToneScale {
+            case "1", "2":
+                skinTone = "Fair"
+            case "3":
+                skinTone = "Light"
+            case "4", "5":
+                skinTone = "Medium"
+            case "6":
+                skinTone = "Tan"
+            case "7":
+                skinTone = "Deep Tan"
+            case "8", "9":
+                skinTone = "Brown"
+            case "10":
+                skinTone = "Deep"
+            default:
+                skinTone = "Unknown"
+            }
+            return FinalResult(skinTone: skinTone, underTone: underTone, scale: skinToneScale, shades: getShades(for: skinTone, undertone: underTone))
         } catch {
             print("Failed to perform request:", error)
             return nil
         }
     }
-
+    
     private func classifySkinTone(from image: UIImage) async throws -> String? {
         guard let cgImage = image.cgImage else { return nil }
 
@@ -104,4 +122,58 @@ class ImageProcessorService {
         print("Undertone: \(underTone)")
         return underTone
     }
+    
+    private func getShades(for skinTone: String, undertone: String) -> [Shade] {
+        switch (skinTone.lowercased(), undertone.lowercased()) {
+        case ("fair", "cool"):
+            return ["Cotton", "Beige Fair", "Perle"].map { Shade(shade: $0) }
+        case ("fair", "neutral"):
+            return ["Porcelain", "Light Ivory"].map { Shade(shade: $0) }
+        case ("fair", "warm"):
+            return ["Creme Ivory", "Warm Marble"].map { Shade(shade: $0) }
+
+        case ("light", "cool"):
+            return ["Pink Marble", "Pink Ivory"].map { Shade(shade: $0) }
+        case ("light", "neutral"):
+            return ["Natural Fair", "Marble", "Ivory"].map { Shade(shade: $0) }
+        case ("light", "warm"):
+            return ["Golden Light", "Warm Ivory"].map { Shade(shade: $0) }
+
+        case ("medium", "cool"):
+            return ["Beige Light", "Eclair", "Pink Beige"].map { Shade(shade: $0) }
+        case ("medium", "neutral"):
+            return ["Natural", "Natural Beige", "Sand"].map { Shade(shade: $0) }
+        case ("medium", "warm"):
+            return ["Golden", "Creme Sand", "Warm Beige"].map { Shade(shade: $0) }
+
+        case ("tan", "cool"):
+            return ["Beige Dark", "Cool Tan"].map { Shade(shade: $0) }
+        case ("tan", "neutral"):
+            return ["Natural Dark", "Tan"].map { Shade(shade: $0) }
+        case ("tan", "warm"):
+            return ["Honey Dark"].map { Shade(shade: $0) }
+
+        case ("deep tan", "cool"):
+            return ["Rich Cocoa"].map { Shade(shade: $0) }
+        case ("deep tan", "neutral"):
+            return ["Tawny"].map { Shade(shade: $0) }
+        case ("deep tan", "warm"):
+            return ["Creme Tan", "Creme Cocoa"].map { Shade(shade: $0) }
+
+        case ("brown", "cool"):
+            return ["Cocoa"].map { Shade(shade: $0) }
+        case ("brown", "neutral"):
+            return ["Ebony"].map { Shade(shade: $0) }
+        case ("brown", "warm"):
+            return ["Chestnut"].map { Shade(shade: $0) }
+
+        case ("deep", "cool"), ("deep", "neutral"), ("deep", "warm"):
+            return ["Deep Cocoa"].map { Shade(shade: $0) }
+
+        default:
+            return [Shade(shade: "Shade not available")]
+        }
+    }
+
+
 }

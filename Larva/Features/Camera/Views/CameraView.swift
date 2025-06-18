@@ -61,27 +61,27 @@ struct CameraView: View {
             ToolbarItem(placement: .topBarLeading, content: {
                 Button(action: {
                     self.router.navigateBack()
-                }) {
+                }, label: {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(.main)
-                }
+                })
                 .padding(.leading)
             })
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    self.showGuidance.toggle()
-                }) {
+                    cameraViewModel.showGuidance.toggle()
+                }, label: {
                     Image(systemName: "book.pages.fill")
                         .foregroundStyle(.main)
-                }
+                })
                 .padding(.trailing)
-                .sheet(isPresented: self.$showGuidance) {
+                .sheet(isPresented: self.$cameraViewModel.showGuidance) {
                     GuidanceModalView()
                 }
             }
         })
         .onAppear {
-            self.cameraViewModel.onAppear()
+            self.cameraViewModel.handleOnAppear()
         }
         .onChange(of: self.showGuidance) { _, newValue in
             if newValue == true {

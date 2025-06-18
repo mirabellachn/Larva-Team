@@ -20,21 +20,22 @@ struct EmptyStateView: View {
                 }
                 // SubTitle
                 HStack {
-                    Text("Let’s discover your most likely complexion shade match in just a few taps 🚀")
+                    Text("Ready to tone it right? Let your skin lead the shade parade!")
                         .font(.system(size: 16))
                         .foregroundStyle(.black)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: 320, alignment: .leading)
+                        .padding(.bottom, 8)
                     Spacer()
                 }
             }
-            .padding(.bottom, 16)
-
-            VStack(alignment: .leading, spacing: 24) {
-                Circle()
-                    .frame(height: 440)
-            }
-
+            .padding(.bottom, 32)
+                Image("EmptyStateMascot")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 480)
+                    .frame(maxWidth: .infinity)
+            
             Spacer()
 
             // Home page button
