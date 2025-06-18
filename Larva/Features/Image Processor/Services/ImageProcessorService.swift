@@ -33,46 +33,83 @@ class ImageProcessorService {
 
     nonisolated func process(image: UIImage) async throws -> FinalResult? {
         do {
-            guard let (faceObservations, _, landmarksResult) = try await ImageProcessorService.visionProcess(image: image) else { return nil }
-            guard let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0]) else { return nil }
+            guard let (faceObservations, _, landmarksResult) = try await ImageProcessorService.visionProcess(image: image),
+                  let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0]) else {
+                return nil
+            }
 
             let croppedImage = UIImage(cgImage: croppedCgImage)
-            guard let averageSkinColor = croppedImage.averageColor else { return nil }
-            guard let landmarksResult = landmarksResult?.landmarks else { return nil }
+            guard let averageSkinColor = croppedImage.averageColor,
+                  let landmarks = landmarksResult?.landmarks else {
+                return nil
+            }
 
             guard let inpaintedImage = try? InpaintImageService.process(from: image,
                                                                         faceObservation: faceObservations[0],
                                                                         originalImageSize: image.size,
-                                                                        landmarks: landmarksResult,
-                                                                        inpaintColor: averageSkinColor) else { return nil }
-
-            guard let skinToneScale = try await classifySkinTone(from: inpaintedImage) else { return nil }
-            guard let underTone = try extractUndertone(from: inpaintedImage) else { return nil }
-            var skinTone: String
-            switch skinToneScale {
-            case "1", "2":
-                skinTone = "Fair"
-            case "3":
-                skinTone = "Light"
-            case "4", "5":
-                skinTone = "Medium"
-            case "6":
-                skinTone = "Tan"
-            case "7":
-                skinTone = "Deep Tan"
-            case "8", "9":
-                skinTone = "Brown"
-            case "10":
-                skinTone = "Deep"
-            default:
-                skinTone = "Unknown"
+                                                                        landmarks: landmarks,
+                                                                        inpaintColor: averageSkinColor) else {
+                return nil
             }
-            return FinalResult(skinTone: skinTone, underTone: underTone, scale: skinToneScale, shades: getShades(for: skinTone, undertone: underTone))
+
+            guard let skinToneScale = try await classifySkinTone(from: inpaintedImage),
+                  let underTone = try extractUndertone(from: inpaintedImage) else {
+                return nil
+            }
+
+            let skinTone = mapSkinTone(scale: skinToneScale)
+            let skinToneDescription = getSkinToneDescription(tone: skinTone)
+            let underToneDescription = getUnderToneDescription(underTone: underTone)
+
+            return FinalResult(
+                skinTone: skinTone,
+                underTone: underTone,
+                scale: skinToneScale,
+                skinToneDescription: skinToneDescription,
+                underToneDescription: underToneDescription,
+                shades: getShades(for: skinTone, undertone: underTone)
+            )
         } catch {
             print("Failed to perform request:", error)
             return nil
         }
     }
+
+    private func mapSkinTone(scale: String) -> String {
+        switch scale {
+        case "1", "2": return "Fair"
+        case "3": return "Light"
+        case "4", "5": return "Medium"
+        case "6": return "Tan"
+        case "7": return "Deep Tan"
+        case "8", "9": return "Brown"
+        case "10": return "Deep"
+        default: return "Unknown"
+        }
+    }
+
+    private func getUnderToneDescription(underTone: String) -> String {
+        switch underTone {
+        case "Cool": return "Purple or Bluish"
+        case "Neutral": return "Blue-green"
+        case "Warm": return "Olive or Greenish"
+        default: return "Anomali"
+        }
+    }
+
+    private func getSkinToneDescription(tone: String) -> String {
+        switch tone {
+        case "Fair": return "Delicate and porcelain-like"
+        case "Light": return "Soft beige skin"
+        case "Medium": return "Naturally radiant"
+        case "Tan": return "Golden or olive-toned"
+        case "Deep Tan": return "Rich bronze-toned"
+        case "Brown": return "Elegant brown rich"
+        case "Deep": return "Beautifully bold and rich"
+        default: return "Unknown"
+        }
+    }
+
     
     private func classifySkinTone(from image: UIImage) async throws -> String? {
         guard let cgImage = image.cgImage else { return nil }

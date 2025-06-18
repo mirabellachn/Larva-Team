@@ -133,7 +133,9 @@ struct ResultView: View {
         skinTone: "Light",
         underTone: "Cool",
         scale: "1",
+        skinToneDescription: "Dummy dummy",
+        underToneDescription: "Dummy dummy",
         shades: dummyShades
-        )
+    )
     ResultView(result: dummyResult)
 }

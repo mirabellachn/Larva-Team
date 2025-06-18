@@ -15,14 +15,14 @@ struct CameraBackgroundView: View {
             [0, 0.5],
             [1, 0.75],
             [0, 1],
-            [1, 1],
+            [1, 1]
         ], colors: [
             .white,
             .white,
             .white,
             .secondaryColor3,
             .secondaryColor1,
-            .secondaryColor4,
+            .secondaryColor4
         ])
         .ignoresSafeArea()
     }

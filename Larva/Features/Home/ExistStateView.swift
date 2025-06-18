@@ -27,7 +27,7 @@ struct ExistStateView: View {
                         Text("Skintone")
                             .font(.newYork(.semibold, size: 16))
                         SkinToneCardView(skinToneColor: result.skinTone,
-                                         skinToneScale: "Monk Scale no. \(result.scale)",
+                                         skinToneScale: result.skinToneDescription,
                                          image: result.scale)
                     }
                     // Undertone
@@ -35,7 +35,7 @@ struct ExistStateView: View {
                         Text("Undertone")
                             .font(.newYork(.semibold, size: 16))
                         SkinToneCardView(skinToneColor: result.underTone,
-                                         skinToneScale: "Purple or bluish veins",
+                                         skinToneScale: "\(result.underToneDescription) veins",
                                          image: result.underTone)
                     }
                 }
@@ -102,6 +102,8 @@ struct ExistStateView: View {
         skinTone: "Light",
         underTone: "Cool",
         scale: "1",
+        skinToneDescription: "Dummy dummy",
+        underToneDescription: "Dummy dummy",
         shades: dummyShades
     )
     ExistStateView(result: dummyResult)
