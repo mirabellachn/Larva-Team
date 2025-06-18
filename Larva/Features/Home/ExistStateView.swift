@@ -34,7 +34,7 @@ struct ExistStateView: View {
                     // Skintone
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Skintone")
-                            .font(.custom("NewYorkSmall-Semibold", size: 16))
+                            .font(.custom("NewYork", size: 16))
                         SkinToneCardView(skinToneColor: result.skinTone,
                                          skinToneScale: "Monk Scale no. \(result.scale)",
                                          image: result.scale)
@@ -42,7 +42,7 @@ struct ExistStateView: View {
                     // Undertone
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Undertone")
-                            .font(.custom("NewYorkSmall-Semibold", size: 16))
+                            .font(.custom("NewYork", size: 16))
                         SkinToneCardView(skinToneColor: result.underTone,
                                          skinToneScale: "Purple or bluish veins",
                                          image: result.underTone)
@@ -53,7 +53,7 @@ struct ExistStateView: View {
                     // Check this recommendation out!
                     HStack {
                         Text("Suggested Complexion Shade")
-                            .font(.custom("NewYorkSmall-SemiBold", size: 16))
+                            .font(.custom("NewYork", size: 16))
                         Spacer()
                     }
                     ZStack {

@@ -15,6 +15,7 @@ struct PreviewView: View {
     @StateObject private var viewModel = PreviewViewModel()
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var router: Router
+    @State private var showGuidance: Bool = false
 
     var body: some View {
         VStack(spacing: 32) {
@@ -53,12 +54,17 @@ struct PreviewView: View {
                 Button(action: {
                     if viewModel.photoCriteria.isValid() {
                         dismiss()
+                    } else {
+                        showGuidance.toggle()
                     }
                 }) {
                     Text(viewModel.photoCriteria.isValid() ? "Retake" : "Read Guidance")
                         .foregroundStyle(.main)
                         .underline()
                 }
+                .sheet(isPresented: self.$showGuidance, content: {
+                    GuidanceModalView()
+                })
             }
         }
         .padding(.horizontal)
