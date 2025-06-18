@@ -37,31 +37,35 @@ struct PreviewView: View {
             ImagePreviewView(previewViewModel: viewModel, image: image)
 
             VStack(spacing: 24) {
-                Button(action: {
-                    if viewModel.photoCriteria.isValid() {
-                        router.navigate(to: .imageProcessor(image: image))
+                Button(
+                    action: {
+                        if viewModel.photoCriteria.isValid() {
+                            router.navigate(to: .imageProcessor(image: image))
 
-                    } else {
-                        dismiss()
+                        } else {
+                            dismiss()
+                        }
+                    }, label: {
+                        Text(viewModel.photoCriteria.isValid() ? "Start Analyze" : "Retake")
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
                     }
-                }) {
-                    Text(viewModel.photoCriteria.isValid() ? "Start Analyze" : "Retake")
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                }
+                )
                 .modifier(ButtonModifier())
 
-                Button(action: {
-                    if viewModel.photoCriteria.isValid() {
-                        dismiss()
-                    } else {
-                        showGuidance.toggle()
+                Button(
+                    action: {
+                        if viewModel.photoCriteria.isValid() {
+                            dismiss()
+                        } else {
+                            showGuidance.toggle()
+                        }
+                    }, label: {
+                        Text(viewModel.photoCriteria.isValid() ? "Retake" : "Read Guidance")
+                            .foregroundStyle(.main)
+                            .underline()
                     }
-                }) {
-                    Text(viewModel.photoCriteria.isValid() ? "Retake" : "Read Guidance")
-                        .foregroundStyle(.main)
-                        .underline()
-                }
+                )
                 .sheet(isPresented: self.$showGuidance, content: {
                     GuidanceModalView()
                 })

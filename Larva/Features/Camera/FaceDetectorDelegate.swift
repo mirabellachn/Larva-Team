@@ -7,6 +7,6 @@
 
 import Vision
 
-protocol FaceDetectorDelegate {
+protocol FaceDetectorDelegate: AnyObject {
     func faceDetection(didDetectFaces faces: [VNFaceObservation])
 }

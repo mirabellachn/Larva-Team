@@ -12,16 +12,18 @@ struct RootView: View {
 
     var body: some View {
         VStack {
-            Button(action: {
-                showGuidance.toggle()
-            }) {
-                Text(showGuidance ? "Hide Guidance" : "Show Guidance")
-                    .font(.headline)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-            }
+            Button(
+                action: {
+                    showGuidance.toggle()
+                }, label: {
+                    Text(showGuidance ? "Hide Guidance" : "Show Guidance")
+                        .font(.headline)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                }
+            )
         }
         .sheet(isPresented: $showGuidance) {
             GuidanceModalView()
@@ -30,6 +32,7 @@ struct RootView: View {
         }
     }
 }
+
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         RootView()

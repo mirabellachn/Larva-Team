@@ -17,7 +17,6 @@ class ImageProcessorViewModel: ObservableObject {
                 let processor = ImageProcessorService()
                 guard let finalResult = try await processor.process(image: image) else { return }
 
-                // TODO: Get final result
                 router.navigate(to: .result(result: finalResult))
             } catch {}
         }

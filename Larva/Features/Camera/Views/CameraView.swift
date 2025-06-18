@@ -12,14 +12,13 @@ struct CameraView: View {
     @StateObject var cameraViewModel: CameraViewModel
     @EnvironmentObject var router: Router
     @Environment(\.scenePhase) var scenePhase
-    @State private var showGuidance = true
 
     var body: some View {
         VStack {
             if !self.cameraViewModel.waitingPermission {
                 if self.cameraViewModel.permissionGranted {
                     ZStack {
-                        if self.scenePhase == .active {
+                        if self.scenePhase == .active && self.cameraViewModel.isSessionRunning() {
                             GeometryReader { geometry in
                                 CameraViewFinder(session: self.cameraViewModel.captureSession)
                                     .ignoresSafeArea()
@@ -36,7 +35,11 @@ struct CameraView: View {
                         } else {
                             CameraEmptyStateView()
                         }
-                        if !self.cameraViewModel.waitingPermission, self.cameraViewModel.permissionGranted {
+
+                        if !self.cameraViewModel.waitingPermission
+                            && self.cameraViewModel.permissionGranted
+                            && self.cameraViewModel.isSessionRunning()
+                        {
                             CameraUIView(cameraViewModel: self.cameraViewModel)
                         }
                     }
@@ -69,7 +72,7 @@ struct CameraView: View {
             })
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    cameraViewModel.showGuidance.toggle()
+                    self.cameraViewModel.showGuidance.toggle()
                 }, label: {
                     Image(systemName: "book.pages.fill")
                         .foregroundStyle(.main)
@@ -81,13 +84,13 @@ struct CameraView: View {
             }
         })
         .onAppear {
-            self.cameraViewModel.handleOnAppear()
+            self.cameraViewModel.onAppear()
         }
-        .onChange(of: self.showGuidance) { _, newValue in
-            if newValue == true {
+        .onChange(of: self.cameraViewModel.showGuidance) { oldValue, newValue in
+            if newValue == true && self.cameraViewModel.isSessionRunning() {
                 self.cameraViewModel.stopSession()
-            } else {
-                self.cameraViewModel.startSession()
+            } else if oldValue == true && newValue == false {
+                self.cameraViewModel.onAppear()
             }
         }
         .onChange(of: self.scenePhase) {

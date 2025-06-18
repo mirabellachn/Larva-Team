@@ -36,7 +36,7 @@ struct ResultView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .top)
-          
+
             Image(result.scale)
                 .resizable()
                 .aspectRatio(contentMode: .fit)

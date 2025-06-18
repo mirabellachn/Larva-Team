@@ -9,14 +9,21 @@ import Foundation
 import SwiftData
 
 @Model
-final class FinalResult {
+final class FinalResult: Sendable {
     var skinTone: String
     var underTone: String
     var scale: String
     var skinToneDescription: String
     var underToneDescription: String
     var shades: [Shade]
-    init(skinTone: String, underTone: String, scale: String, skinToneDescription: String, underToneDescription: String, shades: [Shade]) {
+    init(
+        skinTone: String,
+        underTone: String,
+        scale: String,
+        skinToneDescription: String,
+        underToneDescription: String,
+        shades: [Shade]
+    ) {
         self.skinTone = skinTone
         self.underTone = underTone
         self.scale = scale

@@ -9,12 +9,13 @@ import UIKit
 import Vision
 
 class InpaintImageService {
-    static func process(from image: UIImage,
-                        faceObservation: VNFaceObservation,
-                        originalImageSize: CGSize,
-                        landmarks: VNFaceLandmarks2D,
-                        inpaintColor: UIColor) throws -> UIImage
-    {
+    static func process(
+        from image: UIImage,
+        faceObservation: VNFaceObservation,
+        originalImageSize: CGSize,
+        landmarks: VNFaceLandmarks2D,
+        inpaintColor: UIColor
+    ) throws -> UIImage {
         guard let orientedImage = image.orientedCorrectly() else { return image }
         guard let orientedCgImage = orientedImage.cgImage else {
             return image
@@ -39,7 +40,7 @@ class InpaintImageService {
             landmarks.leftEyebrow,
             landmarks.rightEyebrow,
             landmarks.innerLips,
-            landmarks.outerLips,
+            landmarks.outerLips
         ]
 
         for region in regionsToClear.compactMap({ $0 }) {

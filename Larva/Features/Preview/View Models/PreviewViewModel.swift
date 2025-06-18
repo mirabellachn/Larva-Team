@@ -10,10 +10,18 @@ import UIKit
 @MainActor
 class PreviewViewModel: ObservableObject {
     @Published private(set) var processedImage: UIImage?
-    @Published private(set) var photoCriteria = PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false)
+    @Published private(set) var photoCriteria = PhotoCriteria(
+        isFacingCamera: false,
+        isOnlyOneFaceDetected: false,
+        isCaptureQualityGood: false
+    )
     @Published private(set) var isLoading: Bool = false
 
-    init(photoCriteria: PhotoCriteria? = PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false)) {
+    init(photoCriteria: PhotoCriteria? = PhotoCriteria(
+        isFacingCamera: false,
+        isOnlyOneFaceDetected: false,
+        isCaptureQualityGood: false
+    )) {
         self.photoCriteria = photoCriteria ?? self.photoCriteria
     }
 
@@ -26,7 +34,14 @@ class PreviewViewModel: ObservableObject {
     }
 
     private func validateImage(_ image: UIImage) async throws -> PhotoCriteria {
-        guard let (faceObservations, faceCaptureQualityResult, landmarksResult) = try await ImageProcessorService.visionProcess(image: image)
+        guard let (
+            faceObservations,
+            landmarksResult
+        ) = try await ImageProcessorService.visionProcess(image: image),
+                let faceCaptureQualityResult = try? await ImageProcessorService.getFaceCaptureQuality(
+                    image: image,
+                    from: faceObservations
+                )
         else { return PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false) }
 
         let minYaw = NSNumber(-0.18)
@@ -37,11 +52,6 @@ class PreviewViewModel: ObservableObject {
         let isOnlyOneFaceDetected = faceObservations.count == 1
         var isFacingCamera = false
 
-//        if landmarksResult != nil {
-//                    isFacingCamera = landmarksResult?.pitch?.compare(minPitch) == .orderedDescending && landmarksResult?.pitch?.compare(maxPitch) ==
-//            .orderedAscending && landmarksResult?.yaw?.compare(minYaw) == .orderedDescending && landmarksResult?.yaw?.compare(maxYaw) == .orderedAscending
-//                }
-        
         if let pitch = landmarksResult?.pitch, let yaw = landmarksResult?.yaw {
             isFacingCamera =
                 pitch.compare(minPitch) == .orderedDescending &&
@@ -50,8 +60,7 @@ class PreviewViewModel: ObservableObject {
                 yaw.compare(maxYaw) == .orderedAscending
         }
 
-
-        let isCaptureQualityGood = faceCaptureQualityResult ?? 0.0 > 0.48
+        let isCaptureQualityGood = faceCaptureQualityResult > 0.48
 
         return PhotoCriteria(
             isFacingCamera: isFacingCamera,

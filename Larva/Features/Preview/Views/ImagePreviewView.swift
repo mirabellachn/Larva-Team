@@ -10,6 +10,17 @@ import SwiftUI
 struct ImagePreviewView: View {
     @StateObject var previewViewModel: PreviewViewModel
     let image: UIImage
+    var isOnlyOneFaceDetected: Bool {
+        previewViewModel.photoCriteria.isOnlyOneFaceDetected
+    }
+
+    var isFacingCamera: Bool {
+        previewViewModel.photoCriteria.isFacingCamera
+    }
+
+    var isCaptureQualityGood: Bool {
+        previewViewModel.photoCriteria.isCaptureQualityGood
+    }
 
     var body: some View {
         Image(uiImage: image)
@@ -22,22 +33,32 @@ struct ImagePreviewView: View {
                         Spacer()
                         PreviewCheckListItemView(
                             text: "Look at the camera",
-                            checked: previewViewModel.photoCriteria.isFacingCamera
+                            checked: isFacingCamera
                         )
                         PreviewCheckListItemView(
-                            text: previewViewModel.photoCriteria.isOnlyOneFaceDetected ? "No other face detected" : "You need to be alone",
-                            checked: previewViewModel.photoCriteria.isOnlyOneFaceDetected
+                            text: isOnlyOneFaceDetected ?
+                                "No other face detected" : "You need to be alone",
+                            checked: isOnlyOneFaceDetected
                         )
                         PreviewCheckListItemView(
-                            text: previewViewModel.photoCriteria.isCaptureQualityGood ? "Crystal clear no blur" : "Stay still, don't move",
-                            checked: previewViewModel.photoCriteria.isCaptureQualityGood
+                            text: isCaptureQualityGood ?
+                                "Crystal clear no blur" : "Stay still, don't move",
+                            checked: isCaptureQualityGood
                         )
                     }
                     .padding(16)
                     .frame(width: geometry.size.width, height: geometry.size.height * 1 / 2)
                     .background(
-                        LinearGradient(colors: [previewViewModel.photoCriteria.isValid() ? .mossGreen : .puceRed, .clear], startPoint: .bottom, endPoint: .top)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        LinearGradient(
+                            colors: [
+                                previewViewModel.photoCriteria.isValid()
+                                    ? .mossGreen : .puceRed,
+                                .clear
+                            ],
+                            startPoint: .bottom,
+                            endPoint: .top
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                     )
                     .offset(y: geometry.size.height * 1 / 2)
                 }

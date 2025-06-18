@@ -26,9 +26,11 @@ struct ExistStateView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Skintone")
                             .font(.newYork(.semibold, size: 16))
-                        SkinToneCardView(skinToneColor: result.skinTone,
-                                         skinToneScale: result.skinToneDescription,
-                                         image: result.scale)
+                        SkinToneCardView(
+                            skinToneColor: result.skinTone,
+                            skinToneScale: result.skinToneDescription,
+                            image: result.scale
+                        )
                     }
                     // Undertone
                     VStack(alignment: .leading, spacing: 8) {
@@ -54,9 +56,9 @@ struct ExistStateView: View {
                                 EllipticalGradient(
                                     stops: [
                                         .init(color:
-                                                Color(red: 0.72, green: 0.34, blue: 0.53).opacity(0.5), location: 0),
+                                            Color(red: 0.72, green: 0.34, blue: 0.53).opacity(0.5), location: 0),
                                         .init(color:
-                                                Color(red: 0.98, green: 0.95, blue: 0.95).opacity(0.5), location: 1)
+                                            Color(red: 0.98, green: 0.95, blue: 0.95).opacity(0.5), location: 1)
                                     ],
                                     center: .center
                                 )
@@ -74,16 +76,13 @@ struct ExistStateView: View {
                 }
             }
             // Home page button
-            HStack {
-                Spacer()
-                Button(action: {
-                    router.navigate(to: .camera)
-                }, label: {
-                    Text("Try Another Analysis")
-                        .modifier(ButtonModifier())
-                })
-                Spacer()
-            }
+            Button(action: {
+                router.navigate(to: .camera)
+            }, label: {
+                Text("Try Another Analysis")
+                    .frame(maxWidth: .infinity)
+            })
+            .modifier(ButtonModifier())
             .padding(.top, 124)
             .padding(.bottom, 20)
         }
@@ -96,7 +95,7 @@ struct ExistStateView: View {
     let dummyShades = [
         Shade(shade: "Light Ivory"),
         Shade(shade: "Ivory"),
-        Shade(shade: "Light")
+        Shade(shade: "Sand")
     ]
     let dummyResult = FinalResult(
         skinTone: "Light",

@@ -7,6 +7,7 @@ import AVFoundation
 import Foundation
 import MediaPlayer
 
+// swiftlint:disable all
 public class VolumeButtonHandler: NSObject {
     public typealias VolumeButtonBlock = () -> Void
 
@@ -152,7 +153,8 @@ public class VolumeButtonHandler: NSObject {
     public static func volumeButtonHandler(volumeUpBlock: VolumeButtonBlock? = nil,
                                            volumeDownBlock: VolumeButtonBlock? = nil,
                                            upBlock: VolumeButtonBlock?,
-                                           downBlock: VolumeButtonBlock?) -> VolumeButtonHandler {
+                                           downBlock: VolumeButtonBlock?) -> VolumeButtonHandler
+    {
         let instance = VolumeButtonHandler()
         instance.volumeUpPressed = volumeUpBlock
         instance.volumeDownPressed = volumeDownBlock
@@ -172,7 +174,8 @@ public class VolumeButtonHandler: NSObject {
     override public func observeValue(forKeyPath keyPath: String?,
                                       of object: Any?,
                                       change: [NSKeyValueChangeKey: Any]?,
-                                      context: UnsafeMutableRawPointer?) {
+                                      context: UnsafeMutableRawPointer?)
+    {
         if context == sessionContext {
             guard let change = change,
                   let newVolume = change[.newKey] as? Float,
@@ -248,3 +251,5 @@ public class VolumeButtonHandler: NSObject {
         }
     }
 }
+
+// swiftlint:enable all

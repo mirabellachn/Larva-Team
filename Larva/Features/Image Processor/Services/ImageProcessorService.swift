@@ -9,9 +9,8 @@ import UIKit
 import Vision
 
 class ImageProcessorService {
-    static func visionProcess(image: UIImage) async throws -> ([VNFaceObservation], Float?, VNFaceObservation?)? {
+    static func visionProcess(image: UIImage) async throws -> ([VNFaceObservation], VNFaceObservation?)? {
         let detectFacesRequest = VNDetectFaceRectanglesRequest()
-        let qualityRequest = VNDetectFaceCaptureQualityRequest()
         let landmarksRequest = VNDetectFaceLandmarksRequest()
         guard let data = image.pngData() else { return nil }
         let handler = VNImageRequestHandler(data: data)
@@ -19,41 +18,68 @@ class ImageProcessorService {
             try handler.perform([detectFacesRequest])
             guard let faceObservations = detectFacesRequest.results else { return nil }
             landmarksRequest.inputFaceObservations = faceObservations
-            qualityRequest.inputFaceObservations = faceObservations
-            try handler.perform([qualityRequest, landmarksRequest])
+
+            try handler.perform([landmarksRequest])
 
             guard let landmarksResult = landmarksRequest.results?.first else { return nil }
 
-            return (faceObservations, qualityRequest.results?[0].faceCaptureQuality ?? 0, landmarksResult)
+            return (faceObservations, landmarksResult)
         } catch {
             print("Error processing image: \(error)")
             return nil
         }
     }
 
+    static func getFaceCaptureQuality(
+        image: UIImage,
+        from faceObservations: [VNFaceObservation]
+    ) async throws -> Float {
+        let qualityRequest = VNDetectFaceCaptureQualityRequest()
+        guard let data = image.pngData() else { return 0 }
+
+        let handler = VNImageRequestHandler(data: data)
+
+        do {
+            qualityRequest.inputFaceObservations = faceObservations
+            try handler.perform([qualityRequest])
+
+            return qualityRequest.results?[0].faceCaptureQuality ?? 0
+        } catch {
+            print("Error processing image: \(error)")
+            return 0
+        }
+    }
+
     nonisolated func process(image: UIImage) async throws -> FinalResult? {
         do {
-            guard let (faceObservations, _, landmarksResult) = try await ImageProcessorService.visionProcess(image: image),
-                  let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0]) else {
+            guard let (
+                faceObservations, landmarksResult
+            ) = try await ImageProcessorService.visionProcess(image: image),
+                let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0])
+            else {
                 return nil
             }
 
             let croppedImage = UIImage(cgImage: croppedCgImage)
             guard let averageSkinColor = croppedImage.averageColor,
-                  let landmarks = landmarksResult?.landmarks else {
+                  let landmarks = landmarksResult?.landmarks
+            else {
                 return nil
             }
 
-            guard let inpaintedImage = try? InpaintImageService.process(from: image,
-                                                                        faceObservation: faceObservations[0],
-                                                                        originalImageSize: image.size,
-                                                                        landmarks: landmarks,
-                                                                        inpaintColor: averageSkinColor) else {
+            guard let inpaintedImage = try? InpaintImageService.process(
+                from: image,
+                faceObservation: faceObservations[0],
+                originalImageSize: image.size,
+                landmarks: landmarks,
+                inpaintColor: averageSkinColor
+            ) else {
                 return nil
             }
 
             guard let skinToneScale = try await classifySkinTone(from: inpaintedImage),
-                  let underTone = try extractUndertone(from: inpaintedImage) else {
+                  let underTone = try extractUndertone(from: inpaintedImage)
+            else {
                 return nil
             }
 
@@ -110,7 +136,6 @@ class ImageProcessorService {
         }
     }
 
-    
     private func classifySkinTone(from image: UIImage) async throws -> String? {
         guard let cgImage = image.cgImage else { return nil }
 
@@ -128,7 +153,14 @@ class ImageProcessorService {
     }
 
     private func extractUndertone(from image: UIImage) throws -> String? {
-        guard image.cgImage != nil else { throw NSError(domain: "ImageProcessingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Image does not have a CGImage representation."]) }
+        guard image.cgImage != nil else { throw NSError(
+            domain: "ImageProcessingError",
+            code: -1,
+            userInfo: [
+                NSLocalizedDescriptionKey:
+                    "Image does not have a CGImage representation."
+            ]
+        ) }
 //        let ciImage = CIImage(cgImage: cgImage)
 //        let context = CIContext(options: nil)
 //        // filter to get the average color of the image
@@ -136,7 +168,11 @@ class ImageProcessorService {
 //        filter?.setValue(ciImage, forKey: kCIInputImageKey)
 //        filter?.setValue(CIVector(cgRect: ciImage.extent), forKey: kCIInputExtentKey)
 //        guard let outputImage = filter?.outputImage else {
-//            throw NSError(domain: "ImageProcessingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to apply CIFilter."])
+//            throw NSError(
+//              domain: "ImageProcessingError",
+//              code: -1,
+//              userInfo: [NSLocalizedDescriptionKey: "Unable to apply CIFilter."]
+//             )
 //        }
 //        let outputCGImage = context.createCGImage(outputImage, from: outputImage.extent)!
 //        let uiImage = UIImage(cgImage: outputCGImage)
@@ -159,7 +195,8 @@ class ImageProcessorService {
         print("Undertone: \(underTone)")
         return underTone
     }
-    
+
+    // swiftlint:disable cyclomatic_complexity
     private func getShades(for skinTone: String, undertone: String) -> [Shade] {
         switch (skinTone.lowercased(), undertone.lowercased()) {
         case ("fair", "cool"):
@@ -168,49 +205,41 @@ class ImageProcessorService {
             return ["Porcelain", "Light Ivory"].map { Shade(shade: $0) }
         case ("fair", "warm"):
             return ["Creme Ivory", "Warm Marble"].map { Shade(shade: $0) }
-
         case ("light", "cool"):
             return ["Pink Marble", "Pink Ivory"].map { Shade(shade: $0) }
         case ("light", "neutral"):
             return ["Natural Fair", "Marble", "Ivory"].map { Shade(shade: $0) }
         case ("light", "warm"):
             return ["Golden Light", "Warm Ivory"].map { Shade(shade: $0) }
-
         case ("medium", "cool"):
             return ["Beige Light", "Eclair", "Pink Beige"].map { Shade(shade: $0) }
         case ("medium", "neutral"):
             return ["Natural", "Natural Beige", "Sand"].map { Shade(shade: $0) }
         case ("medium", "warm"):
             return ["Golden", "Creme Sand", "Warm Beige"].map { Shade(shade: $0) }
-
         case ("tan", "cool"):
             return ["Beige Dark", "Cool Tan"].map { Shade(shade: $0) }
         case ("tan", "neutral"):
             return ["Natural Dark", "Tan"].map { Shade(shade: $0) }
         case ("tan", "warm"):
             return ["Honey Dark"].map { Shade(shade: $0) }
-
         case ("deep tan", "cool"):
             return ["Rich Cocoa"].map { Shade(shade: $0) }
         case ("deep tan", "neutral"):
             return ["Tawny"].map { Shade(shade: $0) }
         case ("deep tan", "warm"):
             return ["Creme Tan", "Creme Cocoa"].map { Shade(shade: $0) }
-
         case ("brown", "cool"):
             return ["Cocoa"].map { Shade(shade: $0) }
         case ("brown", "neutral"):
             return ["Ebony"].map { Shade(shade: $0) }
         case ("brown", "warm"):
             return ["Chestnut"].map { Shade(shade: $0) }
-
         case ("deep", "cool"), ("deep", "neutral"), ("deep", "warm"):
             return ["Deep Cocoa"].map { Shade(shade: $0) }
-
         default:
             return [Shade(shade: "Shade not available")]
         }
     }
-
-
+    // swiftlint:enable cyclomatic_complexity
 }

@@ -19,12 +19,14 @@ struct CameraUIView: View {
 
             Spacer()
 
-            Button(action: {
-                self.playOnCaptureHaptics()
-                self.cameraViewModel.capturePhoto()
-            }) {
-                CaptureButtonView()
-            }
+            Button(
+                action: {
+                    self.playOnCaptureHaptics()
+                    self.cameraViewModel.capturePhoto()
+                }, label: {
+                    CaptureButtonView()
+                }
+            )
             .onAppear {
                 self.prepareHaptics()
             }
