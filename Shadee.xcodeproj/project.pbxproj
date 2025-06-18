@@ -7,13 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		19C63F752DFAB7FC001C0609 /* Larva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Larva.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19C63F752DFAB7FC001C0609 /* Shadee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shadee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CC078DE42E000BF5004468FE /* Exceptions for "Shadee" folder in "Shadee" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 19C63F742DFAB7FC001C0609 /* Shadee */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		19C63F772DFAB7FC001C0609 /* Larva */ = {
+		19C63F772DFAB7FC001C0609 /* Shadee */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Larva;
+			exceptions = (
+				CC078DE42E000BF5004468FE /* Exceptions for "Shadee" folder in "Shadee" target */,
+			);
+			path = Shadee;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +45,7 @@
 		19C63F6C2DFAB7FC001C0609 = {
 			isa = PBXGroup;
 			children = (
-				19C63F772DFAB7FC001C0609 /* Larva */,
+				19C63F772DFAB7FC001C0609 /* Shadee */,
 				19C63F762DFAB7FC001C0609 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +53,7 @@
 		19C63F762DFAB7FC001C0609 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				19C63F752DFAB7FC001C0609 /* Larva.app */,
+				19C63F752DFAB7FC001C0609 /* Shadee.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		19C63F742DFAB7FC001C0609 /* Larva */ = {
+		19C63F742DFAB7FC001C0609 /* Shadee */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 19C63F852DFAB7FC001C0609 /* Build configuration list for PBXNativeTarget "Larva" */;
+			buildConfigurationList = 19C63F852DFAB7FC001C0609 /* Build configuration list for PBXNativeTarget "Shadee" */;
 			buildPhases = (
 				19C63F712DFAB7FC001C0609 /* Sources */,
 				19C63F722DFAB7FC001C0609 /* Frameworks */,
@@ -62,13 +75,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				19C63F772DFAB7FC001C0609 /* Larva */,
+				19C63F772DFAB7FC001C0609 /* Shadee */,
 			);
-			name = Larva;
+			name = Shadee;
 			packageProductDependencies = (
 			);
 			productName = Larva;
-			productReference = 19C63F752DFAB7FC001C0609 /* Larva.app */;
+			productReference = 19C63F752DFAB7FC001C0609 /* Shadee.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -86,7 +99,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 19C63F702DFAB7FC001C0609 /* Build configuration list for PBXProject "Larva" */;
+			buildConfigurationList = 19C63F702DFAB7FC001C0609 /* Build configuration list for PBXProject "Shadee" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -103,7 +116,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				19C63F742DFAB7FC001C0609 /* Larva */,
+				19C63F742DFAB7FC001C0609 /* Shadee */,
 			);
 		};
 /* End PBXProject section */
@@ -277,12 +290,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Larva/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shadee/Preview Content\"";
 				DEVELOPMENT_TEAM = 36SKRRK3DC;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Larva/Info.plist;
+				INFOPLIST_FILE = Shadee/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"We need your camera to take your photo for skintone and undertone analysis.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -294,7 +307,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Larva.Larva;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LarvaTeam.shadee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -309,12 +322,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Larva/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shadee/Preview Content\"";
 				DEVELOPMENT_TEAM = 36SKRRK3DC;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Larva/Info.plist;
+				INFOPLIST_FILE = Shadee/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "\"We need your camera to take your photo for skintone and undertone analysis.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,7 +339,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Larva.Larva;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LarvaTeam.shadee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -337,7 +350,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		19C63F702DFAB7FC001C0609 /* Build configuration list for PBXProject "Larva" */ = {
+		19C63F702DFAB7FC001C0609 /* Build configuration list for PBXProject "Shadee" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19C63F832DFAB7FC001C0609 /* Debug */,
@@ -346,7 +359,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		19C63F852DFAB7FC001C0609 /* Build configuration list for PBXNativeTarget "Larva" */ = {
+		19C63F852DFAB7FC001C0609 /* Build configuration list for PBXNativeTarget "Shadee" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19C63F862DFAB7FC001C0609 /* Debug */,
