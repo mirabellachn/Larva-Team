@@ -149,7 +149,10 @@ public class VolumeButtonHandler: NSObject {
         }
     }
     
-    public static func volumeButtonHandler(volumeUpBlock: VolumeButtonBlock? = nil, volumeDownBlock: VolumeButtonBlock? = nil, upBlock: VolumeButtonBlock?, downBlock: VolumeButtonBlock?) -> VolumeButtonHandler {
+    public static func volumeButtonHandler(volumeUpBlock: VolumeButtonBlock? = nil,
+                                           volumeDownBlock: VolumeButtonBlock? = nil,
+                                           upBlock: VolumeButtonBlock?,
+                                           downBlock: VolumeButtonBlock?) -> VolumeButtonHandler {
         let instance = VolumeButtonHandler()
         instance.volumeUpPressed = volumeUpBlock
         instance.volumeDownPressed = volumeDownBlock
@@ -166,7 +169,10 @@ public class VolumeButtonHandler: NSObject {
         currentVolume -= amount
     }
 
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+    override public func observeValue(forKeyPath keyPath: String?,
+                                      of object: Any?,
+                                      change: [NSKeyValueChangeKey: Any]?,
+                                      context: UnsafeMutableRawPointer?) {
         if context == sessionContext {
             guard let change = change,
                   let newVolume = change[.newKey] as? Float,
@@ -205,7 +211,8 @@ public class VolumeButtonHandler: NSObject {
             NSLog("Old Vol: %.2f New Vol: %.2f Difference = %.2f", oldVolume, newVolume, difference)
 
             if exactJumpsOnly && difference < 0.062 && (newVolume == 1.0 || newVolume == 0.0) {
-                debugPrint("Using a non-standard Jump of %f (%f-%f) which is less than the .0625 because a press of the volume button resulted in hitting min or max volume", difference, oldVolume, newVolume)
+                debugPrint("Using a non-standard Jump of %f (%f-%f) which is less than the .0625 because a press of the volume button resulted in hitting min or max volume",
+                           difference, oldVolume, newVolume)
             } else if exactJumpsOnly && (difference > 0.063 || difference < 0.062) {
                 debugPrint("Ignoring non-standard Jump of %f (%f-%f), which is not the .0625 a press of the actually volume button would have resulted in.", difference, oldVolume, newVolume)
                 setInitialVolume()

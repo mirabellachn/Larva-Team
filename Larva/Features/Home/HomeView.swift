@@ -4,7 +4,8 @@
 //
 //  Created by Ageng Tawang Aryonindito on 13/06/25.
 //
-import _SwiftData_SwiftUI
+
+import SwiftData
 import SwiftUI
 
 struct HomeView: View {

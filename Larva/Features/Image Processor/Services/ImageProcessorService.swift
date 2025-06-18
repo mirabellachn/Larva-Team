@@ -31,7 +31,7 @@ class ImageProcessorService {
         }
     }
 
-    func process(image: UIImage) async throws -> FinalResult? {
+    nonisolated func process(image: UIImage) async throws -> FinalResult? {
         do {
             guard let (faceObservations, _, landmarksResult) = try await ImageProcessorService.visionProcess(image: image) else { return nil }
             guard let croppedCgImage = try CropImageService.cropFace(from: image, for: faceObservations[0]) else { return nil }
@@ -40,7 +40,11 @@ class ImageProcessorService {
             guard let averageSkinColor = croppedImage.averageColor else { return nil }
             guard let landmarksResult = landmarksResult?.landmarks else { return nil }
 
-            guard let inpaintedImage = try? InpaintImageService.process(from: image, faceObservation: faceObservations[0], originalImageSize: image.size, landmarks: landmarksResult, inpaintColor: averageSkinColor) else { return nil }
+            guard let inpaintedImage = try? InpaintImageService.process(from: image,
+                                                                        faceObservation: faceObservations[0],
+                                                                        originalImageSize: image.size,
+                                                                        landmarks: landmarksResult,
+                                                                        inpaintColor: averageSkinColor) else { return nil }
 
             guard let skinTone = try await classifySkinTone(from: inpaintedImage) else { return nil }
             guard let underTone = try extractUndertone(from: inpaintedImage) else { return nil }
@@ -69,7 +73,7 @@ class ImageProcessorService {
     }
 
     private func extractUndertone(from image: UIImage) throws -> String? {
-        guard let cgImage = image.cgImage else { throw NSError(domain: "ImageProcessingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Image does not have a CGImage representation."]) }
+        guard image.cgImage != nil else { throw NSError(domain: "ImageProcessingError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Image does not have a CGImage representation."]) }
 //        let ciImage = CIImage(cgImage: cgImage)
 //        let context = CIContext(options: nil)
 //        // filter to get the average color of the image

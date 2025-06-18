@@ -12,6 +12,8 @@ struct CameraView: View {
     @StateObject var cameraViewModel: CameraViewModel
     @EnvironmentObject var router: Router
     @Environment(\.scenePhase) var scenePhase
+    @State private var showGuidance = true
+
     var body: some View {
         VStack {
             if !self.cameraViewModel.waitingPermission {
@@ -27,7 +29,7 @@ struct CameraView: View {
                                 if self.cameraViewModel.faceCount == 1 {
                                     FaceBoundingBoxOverlayView(
                                         boxes: self.cameraViewModel.faceBoundingBoxes,
-                                        previewSize: geometry.size,
+                                        previewSize: geometry.size
                                     )
                                 }
                             }
@@ -40,7 +42,7 @@ struct CameraView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top)
-                
+
                 } else {
                     CameraPermissionDeniedView(cameraViewModel: self.cameraViewModel)
                 }
@@ -66,15 +68,27 @@ struct CameraView: View {
                 .padding(.leading)
             })
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {}) {
+                Button(action: {
+                    self.showGuidance.toggle()
+                }) {
                     Image(systemName: "book.pages.fill")
                         .foregroundStyle(.main)
                 }
                 .padding(.trailing)
+                .sheet(isPresented: self.$showGuidance) {
+                    GuidanceModalView()
+                }
             }
         })
         .onAppear {
             self.cameraViewModel.onAppear()
+        }
+        .onChange(of: self.showGuidance) { _, newValue in
+            if newValue == true {
+                self.cameraViewModel.stopSession()
+            } else {
+                self.cameraViewModel.startSession()
+            }
         }
         .onChange(of: self.scenePhase) {
             self.cameraViewModel.onScenePhaseChange(scenePhase: self.scenePhase)
@@ -89,18 +103,21 @@ struct CameraViewFinder: UIViewRepresentable {
     let session: AVCaptureSession
     func makeUIView(context: Context) -> UIView {
         let previewView = PreviewView()
-        
+
         previewView.videoPreviewLayer.session = self.session
         previewView.videoPreviewLayer.videoGravity = .resizeAspectFill
         return previewView
     }
+
     func updateUIView(_ uiView: UIView, context: Context) {
         // No update needed for now
     }
+
     private class PreviewView: UIView {
         override class var layerClass: AnyClass {
             return AVCaptureVideoPreviewLayer.self
         }
+
         var videoPreviewLayer: AVCaptureVideoPreviewLayer {
             guard let layer = self.layer as? AVCaptureVideoPreviewLayer else {
                 fatalError("Expected layer to be of type AVCaptureVideoPreviewLayer")
