@@ -4,7 +4,8 @@
 //
 //  Created by Ageng Tawang Aryonindito on 13/06/25.
 //
-import _SwiftData_SwiftUI
+
+import SwiftData
 import SwiftUI
 
 struct HomeView: View {
@@ -20,12 +21,12 @@ struct HomeView: View {
                         .resizable()
                         .ignoresSafeArea(.all)
 
-                    ExistStateView(result: result[0])
+                    ExistStateView(result: result.last!)
                         .environmentObject(router)
                 }
             } else { // Empty State
                 ZStack {
-                    Image("Home Page (State)")
+                    Image("Home Page (Empty State)")
                         .resizable()
                         .ignoresSafeArea(.all)
                     EmptyStateView()

@@ -26,7 +26,8 @@ class PreviewViewModel: ObservableObject {
     }
 
     private func validateImage(_ image: UIImage) async throws -> PhotoCriteria {
-        guard let (faceObservations, faceCaptureQualityResult, landmarksResult) = try await ImageProcessorService.visionProcess(image: image) else { return PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false) }
+        guard let (faceObservations, faceCaptureQualityResult, landmarksResult) = try await ImageProcessorService.visionProcess(image: image)
+        else { return PhotoCriteria(isFacingCamera: false, isOnlyOneFaceDetected: false, isCaptureQualityGood: false) }
 
         let minYaw = NSNumber(-0.18)
         let maxYaw = NSNumber(0.18)
@@ -36,9 +37,19 @@ class PreviewViewModel: ObservableObject {
         let isOnlyOneFaceDetected = faceObservations.count == 1
         var isFacingCamera = false
 
-        if landmarksResult != nil {
-            isFacingCamera = landmarksResult?.pitch?.compare(minPitch) == .orderedDescending && landmarksResult?.pitch?.compare(maxPitch) == .orderedAscending && landmarksResult?.yaw?.compare(minYaw) == .orderedDescending && landmarksResult?.yaw?.compare(maxYaw) == .orderedAscending
+//        if landmarksResult != nil {
+//                    isFacingCamera = landmarksResult?.pitch?.compare(minPitch) == .orderedDescending && landmarksResult?.pitch?.compare(maxPitch) ==
+//            .orderedAscending && landmarksResult?.yaw?.compare(minYaw) == .orderedDescending && landmarksResult?.yaw?.compare(maxYaw) == .orderedAscending
+//                }
+        
+        if let pitch = landmarksResult?.pitch, let yaw = landmarksResult?.yaw {
+            isFacingCamera =
+                pitch.compare(minPitch) == .orderedDescending &&
+                pitch.compare(maxPitch) == .orderedAscending &&
+                yaw.compare(minYaw) == .orderedDescending &&
+                yaw.compare(maxYaw) == .orderedAscending
         }
+
 
         let isCaptureQualityGood = faceCaptureQualityResult ?? 0.0 > 0.48
 

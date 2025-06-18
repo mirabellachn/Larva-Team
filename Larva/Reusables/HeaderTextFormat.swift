@@ -11,10 +11,14 @@ struct HeaderTextFormat: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(
-                Font.custom("NewYorkSmall-Semibold", size: 24)
-                    .weight(.semibold)
+                .newYork(.semibold, size: 24)
             )
             .multilineTextAlignment(.center)
             .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
     }
+}
+
+#Preview {
+    Text("Hello World")
+        .modifier(HeaderTextFormat())
 }

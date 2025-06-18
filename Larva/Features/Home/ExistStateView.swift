@@ -25,16 +25,17 @@ struct ExistStateView: View {
                         .font(.system(size: 16))
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: 320, alignment: .leading)
+                        .padding(.bottom, 8)
                     Spacer()
                 }
             }
-            .padding(.bottom, 16)
+            .padding(.bottom, 8)
             VStack(alignment: .leading, spacing: 24) {
                 HStack(spacing: 16) {
                     // Skintone
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Skintone")
-                            .font(.custom("NewYorkSmall-Semibold", size: 16))
+                            .font(.newYork(.semibold, size: 16))
                         SkinToneCardView(skinToneColor: result.skinTone,
                                          skinToneScale: "Monk Scale no. \(result.scale)",
                                          image: result.scale)
@@ -42,7 +43,7 @@ struct ExistStateView: View {
                     // Undertone
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Undertone")
-                            .font(.custom("NewYorkSmall-Semibold", size: 16))
+                            .font(.newYork(.semibold, size: 16))
                         SkinToneCardView(skinToneColor: result.underTone,
                                          skinToneScale: "Purple or bluish veins",
                                          image: result.underTone)
@@ -53,7 +54,7 @@ struct ExistStateView: View {
                     // Check this recommendation out!
                     HStack {
                         Text("Suggested Complexion Shade")
-                            .font(.custom("NewYorkSmall-SemiBold", size: 16))
+                            .font(.newYork(.semibold, size: 16))
                         Spacer()
                     }
                     ZStack {
@@ -72,14 +73,13 @@ struct ExistStateView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(red: 0.89, green: 0.8, blue: 0.85).opacity(0.3), lineWidth: 1)
                         // Content (shade name + dummy color)
-                        HStack(spacing: 0) {
+                        HStack(spacing: -20) {
                             ForEach(result.shades, id: \.shade) { shade in
                                 ShadeRecommendationView(shade: shade)
-                                    .padding(.top, 8)
                             }
                         }
                     }
-                    .frame(width: 355, height: 159)
+                    .frame(width: 355, height: 170)
                 }
             }
             .frame(height: 440)
@@ -94,6 +94,7 @@ struct ExistStateView: View {
             .padding(.bottom, 20)
         }
         .padding(EdgeInsets(top: 20, leading: 20, bottom: 2, trailing: 20))
+        .preferredColorScheme(.light)
     }
 }
 
