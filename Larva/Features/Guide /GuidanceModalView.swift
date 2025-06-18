@@ -14,85 +14,87 @@ struct GuidanceModalView: View {
     ]
     
     var body: some View {
-        ZStack {
+        VStack(spacing: 16) {
+            Capsule()
+                .fill(Color.secondary)
+                .frame(width: 40, height: 5)
+                .padding(.vertical, 8)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("The Do’s Before You Snap")
+                    .font(.custom("NewYork", size: 22))
+                    .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
+                    
+                Text("A simple guide to make your photo work better for the analysis!")
+                    .font(.system(size: 16))
+                    .foregroundColor(.black)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 24)
+                
+            HStack(spacing: 24) {
+                ZStack(alignment: .bottom) {
+                    Image("front-position")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 128, height: 192)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                    Image("CheckMarkIcon")
+                        .resizable()
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(Color(red: 0.61, green: 0.82, blue: 0.13))
+                        .offset(y: 15)
+                }
+                    
+                ZStack(alignment: .bottom) {
+                    Image("side-position")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 128, height: 192)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        
+                    Image("XMarkIcon")
+                        .resizable()
+                        .frame(width: 36, height: 36)
+                        .foregroundColor(Color(red: 0.86, green: 0.33, blue: 0.43))
+                        .offset(y: 15)
+                }
+            }
+                
+            Spacer().frame(height: 0)
+                
+            // Checklist
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(guidanceItems, id: \.text) { item in
+                    HStack(spacing: 8) {
+                        Image(iconName(for: item.icon))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 44, height: 44)
+                            .padding(5)
+                            .clipShape(Circle())
+                            
+                        Text(item.text)
+                            .foregroundColor(.black)
+                            .font(.system(size: 16))
+                            
+                        Spacer()
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
+                
+            Spacer(minLength: 20)
+        }
+        .padding(.vertical)
+        .background(
             Image("sub-background")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-            
-            VStack(spacing: 16) {
-                Spacer().frame(height: 100)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("The Do’s Before You Snap")
-                        .font(.custom("NewYorkLarge-Semibold", size: 22))
-                        .foregroundColor(Color(red: 0.72, green: 0.34, blue: 0.53))
-                    
-                    Text("A simple guide to make your photo work better for the analysis!")
-                        .font(.system(size: 16))
-                        .foregroundColor(.black)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 24)
-                
-                
-                HStack(spacing: 24) {
-                    ZStack(alignment: .bottom) {
-                        Image("front-position")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 128, height: 192)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                        
-                        Image("checkmark")
-                            .resizable()
-                            .frame(width: 36, height: 36)
-                            .foregroundColor(Color(red: 0.61, green: 0.82, blue: 0.13))
-                            .offset(y: 15)
-                    }
-                    
-                    ZStack(alignment: .bottom) {
-                        Image("side-position")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 128, height: 192)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                        
-                        Image("xmark")
-                            .resizable()
-                            .frame(width: 36, height: 36)
-                            .foregroundColor(Color(red: 0.86, green: 0.33, blue: 0.43))
-                            .offset(y: 15)
-                    }
-                }
-                
-                Spacer().frame(height: 0)
-                
-                // Checklist
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(guidanceItems, id: \.text) { item in
-                        HStack(spacing: 8) {
-                            Image(iconName(for: item.icon))
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 44, height: 44)
-                                .padding(5)
-                                .clipShape(Circle())
-                            
-                            Text(item.text)
-                                .foregroundColor(.black)
-                                .font(.system(size: 16))
-                            
-                            Spacer()
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-                
-                Spacer(minLength: 20)
-            }
-        }
+        )
     }
     
     private func iconName(for systemIcon: String) -> String {
@@ -112,4 +114,3 @@ struct GuidanceModalView_Previews: PreviewProvider {
         GuidanceModalView()
     }
 }
-
