@@ -35,6 +35,7 @@ struct EmptyStateView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(maxHeight: 480)
                     .frame(maxWidth: .infinity)
+                    .padding(.trailing, 32)
             Spacer()
             // Home page button
             Button(action: {

@@ -26,7 +26,7 @@ struct ImageProcessorView: View {
                     value: isAtTop
                 )
 
-            Text("Dee’s analyzing your tone\nto find match shade for you!")
+            Text("Dee’s analyzing your tone...")
                 .foregroundColor(.black)
                 .font(.system(size: 18, weight: .regular, design: .rounded))
                 .multilineTextAlignment(.center)

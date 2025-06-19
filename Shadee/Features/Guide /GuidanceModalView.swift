@@ -64,7 +64,7 @@ struct GuidanceModalView: View {
             }
 
             // Checklist
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 ForEach(guidanceItems, id: \.text) { item in
                     HStack(spacing: 8) {
                         Image(iconName(for: item.icon))
@@ -83,7 +83,9 @@ struct GuidanceModalView: View {
                 }
             }
             .padding(.horizontal, 16)
+            .padding(.top, 16)
         }
+        .padding(.bottom, 16)
         .background(
             Image("sub-background")
                 .resizable()

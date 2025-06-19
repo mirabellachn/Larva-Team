@@ -26,7 +26,7 @@ struct FaceBoundingBoxOverlayView: View {
                 )
 
                 Rectangle()
-                    .stroke(Color.green, lineWidth: 2)
+                    .stroke(.main, lineWidth: 2)
                     .frame(width: rect.width, height: rect.height)
                     .offset(x: rect.minX, y: rect.minY)
             }

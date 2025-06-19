@@ -38,8 +38,7 @@ struct CameraView: View {
 
                         if !self.cameraViewModel.waitingPermission
                             && self.cameraViewModel.permissionGranted
-                            && self.cameraViewModel.isSessionRunning()
-                        {
+                            && self.cameraViewModel.isSessionRunning() {
                             CameraUIView(cameraViewModel: self.cameraViewModel)
                         }
                     }

@@ -18,7 +18,7 @@ struct PreviewView: View {
     @State private var showGuidance: Bool = false
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 24) {
             VStack(spacing: 8) {
                 Text(viewModel.photoCriteria.isValid() ? "Ready to analyze" : "Picture can’t be processed")
                     .font(
@@ -33,8 +33,11 @@ struct PreviewView: View {
                     .font(.subheadline)
                     .foregroundStyle(.black)
             }
+            .padding(.top, -8)
 
             ImagePreviewView(previewViewModel: viewModel, image: image)
+                .padding(.bottom, 16)
+
 
             VStack(spacing: 24) {
                 Button(
@@ -75,7 +78,9 @@ struct PreviewView: View {
         .padding(.top)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            PreviewBackgroundView()
+            Image(viewModel.photoCriteria.isValid() ? "Preview (Success)" : "Preview (Error)")
+                .resizable()
+                .ignoresSafeArea()
         )
         .navigationBarBackButtonHidden(true)
         .onAppear {
