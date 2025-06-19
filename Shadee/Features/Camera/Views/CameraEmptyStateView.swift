@@ -11,6 +11,6 @@ struct CameraEmptyStateView: View {
     var body: some View {
         Rectangle()
             .foregroundStyle(.black)
-            .clipShape(RoundedRectangle(cornerRadius: 48))
+            .clipShape(RoundedRectangle(cornerRadius: 36))
     }
 }
