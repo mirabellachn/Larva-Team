@@ -140,7 +140,7 @@ class ImageProcessorService {
         guard let cgImage = image.cgImage else { return nil }
 
         let defaultConfig: MLModelConfiguration = .init()
-        let compiledModel = try MST_Skin_Tone_1(configuration: defaultConfig).model
+        let compiledModel = try MST_Skin_Tone_18_June(configuration: defaultConfig).model
         let visionModel = try VNCoreMLModel(for: compiledModel)
         let request = VNCoreMLRequest(model: visionModel)
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
