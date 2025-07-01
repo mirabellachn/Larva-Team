@@ -19,6 +19,7 @@ Allows users to save their analysis results for future reference when shopping o
 4. Vision Framework – For processing and validating photos.
 5. Custom Data Annotation – Manual labeling of large datasets using MST-10 scale with masked non-skin regions.
 6. Color Constant API – For precise color extraction and classification.
+7. SwiftLint – Static code analysis tool to enforce style and conventions.
 
 **How It Works**
 1. Open the App
