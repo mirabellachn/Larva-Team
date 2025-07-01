@@ -2,7 +2,6 @@
 
 # **Shadee - Your Personal Complexion Match Assistant**
 
-
 Shadee is an iOS application that helps users quickly and confidently find the complexion shade that fits them best. Using machine learning and computer vision, Shadee analyzes a user’s skin tone and undertone to recommend the most suitable foundation shades.
 
 **Features**
