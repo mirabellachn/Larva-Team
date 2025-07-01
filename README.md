@@ -1,5 +1,6 @@
 # Larva-Team
-**Shadee - Your Personal Complexion Match Assistant**
+
+# **Shadee - Your Personal Complexion Match Assistant**
 
 Shadee is an iOS application that helps users quickly and confidently find the complexion shade that fits them best. Using machine learning and computer vision, Shadee analyzes a user’s skin tone and undertone to recommend the most suitable foundation shades.
 
@@ -13,7 +14,7 @@ Processes photos on-device and returns personalized shade recommendations within
 4. Save & Review
 Allows users to save their analysis results for future reference when shopping online or in-store.
 
-Tech Stack
+**Tech Stack**
 1. Swift – Core language for iOS app development.
 2. SwiftUI – Declarative UI framework for building clean, modern interfaces.
 3. CoreML – For integrating the trained skin tone & undertone ML model.
