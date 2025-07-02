@@ -55,5 +55,16 @@ Focused on real-world photo conditions and a diverse range of skin tones.
 4. Explore hybrid models combining photo and user metadata.
 5. Enhance accessibility and localization.
 
+## Team & Roles
+
+| Name                                                   | Roles                   |
+|--------------------------------------------------------|-------------------------|
+| [@Adhishelsaa](https://github.com/Adhishelsaa)         | Product Manager Lead    |
+| [@Chikmahaja](https://github.com/Chikmahaja)           | Design Lead             |
+| [@abimnyud](https://github.com/abimnyud)               | Tech Lead               |
+| [@AgengT](https://github.com/AgengT)                   | Tech Member             |
+| [@Louise-Fernando](https://github.com/Louise-Fernando) | Tech Member             |
+| [@mirabellachn](https://github.com/mirabellachn)       | Tech Member             |
+
 ## Repository
 🔗 [Shadee GitHub Repository](https://github.com/mirabellachn/Larva-Team)
